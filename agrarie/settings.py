@@ -22,6 +22,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_jwt',
+    'users.apps.UsersConfig',
 ]
 
 MIDDLEWARE = [
@@ -89,6 +90,8 @@ USE_I18N = True
 USE_L10N = True
 
 USE_TZ = True
+
+AUTH_USER_MODEL = 'users.User'
 
 STATIC_URL = '/static/'
 
