@@ -120,7 +120,7 @@ class RatingStart(models.Model):
 
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
-    consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, verbose_name='Консультант')
+    consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, verbose_name='Консультант', related_name="ratings")
     star = models.ForeignKey(RatingStart, on_delete=models.CASCADE, verbose_name='Звезда')
 
     def __str__(self):

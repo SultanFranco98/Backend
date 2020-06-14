@@ -2,7 +2,16 @@ from rest_framework import serializers
 from .models import *
 
 
-class UsersSerializer(serializers.ModelSerializer):
+class UsersListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = (
+            'id', 'email', 'first_name', 'last_name', 'photo')
+        read_only_fields = ('is_client', 'is_consultant',
+                            'is_active')
+
+
+class UsersDetailSerializer(serializers.ModelSerializer):
     password = serializers.CharField(max_length=128, min_length=8, write_only=True, style={'input_type': 'password'})
 
     class Meta:
@@ -15,10 +24,25 @@ class UsersSerializer(serializers.ModelSerializer):
                             'is_active')
 
 
+class CategorySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Category
+        fields = '__all__'
+
+
+class RatingStarSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = RatingStart
+        fields = '__all__'
+
+
 class RatingCreateSerializer(serializers.ModelSerializer):
+    user = UsersListSerializer(many=False, read_only=True)
+
     class Meta:
         model = Rating
-        fields = ('consultant', 'star',)
+        fields = ('user', 'consultant', 'star',)
+        read_only_fields = ('user',)
 
     def create(self, validated_data):
         rating, _ = Rating.objects.update_or_create(
@@ -44,12 +68,13 @@ class ImageConsultantListSerializer(serializers.ModelSerializer):
 
 
 class ConsultantListSerializer(serializers.ModelSerializer):
-    # user = UsersSerializer(many=False)
+    user = UsersListSerializer(many=False)
     specialty = CategoryConsultantListSerializer(many=True, read_only=True)
+    middle_star = serializers.FloatField()
 
     class Meta:
         model = Consultant
-        fields = ('id', 'specialty', 'description')
+        fields = ('id', 'user', 'specialty', 'description', 'middle_star')
 
 
 class ImageConsultantDetailSerializer(serializers.ModelSerializer):
@@ -69,7 +94,7 @@ class CategoryConsultantDetailSerializer(serializers.ModelSerializer):
 
 
 class ConsultantDetailSerializer(serializers.ModelSerializer):
-    user = UsersSerializer(many=False)
+    user = UsersListSerializer(many=False)
     specialty = CategoryConsultantListSerializer(many=True, read_only=True)
 
     class Meta:
@@ -110,7 +135,7 @@ class RegistrationClientSerializer(serializers.ModelSerializer):
 
 
 class RegistrationConsultantSerializer(serializers.ModelSerializer):
-    user = UsersSerializer(many=False)
+    user = UsersDetailSerializer(many=False)
     specialty = CategoryConsultantListSerializer(many=True)
     certificates = ImageConsultantListSerializer(many=True)
     password1 = serializers.CharField(
