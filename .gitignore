@@ -142,6 +142,3 @@ cython_debug/
 
 .gitignore
 .idea/
-agrarie/
-manage.py
-requirements.txt
