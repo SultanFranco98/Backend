@@ -52,3 +52,80 @@ class User(AbstractBaseUser, PermissionsMixin):
     class Meta:
         verbose_name = 'Пользователь'
         verbose_name_plural = 'Пользователи'
+
+
+class Consultant(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    description = models.TextField(blank=False, null=False, verbose_name='Описание')
+    comment = models.TextField(max_length=200, blank=True, null=True, verbose_name='Комментарии')
+
+    class Meta:
+        verbose_name = 'Консультант'
+        verbose_name_plural = 'Консультанты'
+
+    def __str__(self):
+        return '{}'.format(self.user)
+
+
+class Category(models.Model):
+    title = models.CharField(max_length=20, blank=False, null=False, verbose_name='Категория')
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+
+    def __str__(self):
+        return self.title
+
+
+class ImageConsultant(models.Model):
+    consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, blank=False, null=False,
+                                   related_name='certificates',
+                                   verbose_name='Консультант')
+    certificate_image = models.ImageField(upload_to='certificate-image/', blank=True, null=True,
+                                          verbose_name='Сертификаты')
+
+    class Meta:
+        verbose_name = 'Сертификат'
+        verbose_name_plural = 'Сертификаты'
+
+    def __str__(self):
+        return '{}'.format(self.consultant)
+
+
+class CategoryConsultant(models.Model):
+    consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, blank=False, null=False,
+                                   related_name='specialty', verbose_name='Консультант')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=False, null=False, verbose_name='Категории')
+
+    class Meta:
+        verbose_name = 'Специальность'
+        verbose_name_plural = 'Специальности'
+
+    def __str__(self):
+        return '{}'.format(self.consultant)
+
+
+class RatingStart(models.Model):
+    value = models.SmallIntegerField(default=0, verbose_name='Значение')
+
+    def __str__(self):
+        return '{}'.format(self.value)
+
+    class Meta:
+        verbose_name = "Звезда рейтинга"
+        verbose_name_plural = "Звезды рейтинга"
+        ordering = ["-value"]
+
+
+class Rating(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, verbose_name='Консультант')
+    star = models.ForeignKey(RatingStart, on_delete=models.CASCADE, verbose_name='Звезда')
+
+    def __str__(self):
+        return '{}'.format(self.user)
+
+    class Meta:
+        verbose_name = "Рейтинг"
+        verbose_name_plural = "Рейтинги"

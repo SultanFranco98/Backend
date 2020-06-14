@@ -1,0 +1,143 @@
+from rest_framework import serializers
+from .models import *
+
+
+class UsersSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(max_length=128, min_length=8, write_only=True, style={'input_type': 'password'})
+
+    class Meta:
+        model = User
+        fields = (
+            'id', 'username', 'email', 'password', 'first_name', 'last_name', 'photo', 'phone', 'is_client',
+            'is_consultant',
+            'is_active')
+        read_only_fields = ('is_client', 'is_consultant',
+                            'is_active')
+
+
+class RatingCreateSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Rating
+        fields = ('consultant', 'star',)
+
+    def create(self, validated_data):
+        rating, _ = Rating.objects.update_or_create(
+            user=validated_data.get('user', None),
+            consultant=validated_data.get('consultant', None),
+            defaults={'star': validated_data.get('star')}
+        )
+        return rating
+
+
+class CategoryConsultantListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CategoryConsultant
+        fields = ('id', 'consultant', 'category',)
+        read_only_fields = ('consultant',)
+
+
+class ImageConsultantListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = ImageConsultant
+        fields = ('id', 'consultant', 'certificate_image',)
+        read_only_fields = ('consultant',)
+
+
+class ConsultantListSerializer(serializers.ModelSerializer):
+    # user = UsersSerializer(many=False)
+    specialty = CategoryConsultantListSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Consultant
+        fields = ('id', 'specialty', 'description')
+
+
+class ImageConsultantDetailSerializer(serializers.ModelSerializer):
+    consultant = ConsultantListSerializer(many=False)
+
+    class Meta:
+        model = ImageConsultant
+        fields = ('id', 'consultant', 'certificate_image',)
+
+
+class CategoryConsultantDetailSerializer(serializers.ModelSerializer):
+    consultant = ConsultantListSerializer(many=False)
+
+    class Meta:
+        model = CategoryConsultant
+        fields = ('id', 'consultant', 'category',)
+
+
+class ConsultantDetailSerializer(serializers.ModelSerializer):
+    user = UsersSerializer(many=False)
+    specialty = CategoryConsultantListSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Consultant
+        fields = ('id', 'user', 'specialty', 'description',)
+
+
+class RegistrationClientSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(
+        max_length=128,
+        min_length=8,
+        write_only=True,
+        style={'input_type': 'password'}
+    )
+    password1 = serializers.CharField(
+        max_length=128,
+        min_length=8,
+        write_only=True,
+        style={'input_type': 'password'},
+    )
+
+    class Meta:
+        model = User
+        fields = (
+            'username', 'email', 'password', 'password1', 'first_name', 'last_name', 'photo', 'phone')
+        read_only_fields = ('is_client', 'is_consultant', 'is_active')
+
+    def create(self, validated_data):
+        password = validated_data.pop('password')
+        password1 = validated_data.pop('password1')
+        if password1 and password and password != password1:
+            raise serializers.ValidationError('Пароль не совпадает')
+        user = User.objects.create_user(password=password, **validated_data)
+        user.is_client = True
+        user.is_active = True
+        user.save()
+        return user
+
+
+class RegistrationConsultantSerializer(serializers.ModelSerializer):
+    user = UsersSerializer(many=False)
+    specialty = CategoryConsultantListSerializer(many=True)
+    certificates = ImageConsultantListSerializer(many=True)
+    password1 = serializers.CharField(
+        max_length=128,
+        min_length=8,
+        write_only=True,
+        style={'input_type': 'password'},
+    )
+
+    class Meta:
+        model = Consultant
+        fields = ('user', 'specialty', 'certificates', 'password1', 'description', 'comment')
+
+    def create(self, validated_data):
+        user_data = validated_data.pop('user')
+        password1 = validated_data.pop('password1')
+        categories_data = validated_data.pop('specialty')
+        certificates_data = validated_data.pop('certificates')
+        password = user_data['password']
+        if password1 and password and password != password1:
+            raise serializers.ValidationError('Пароль не совпадает')
+        user = User.objects.create_user(**user_data)
+        consultant = Consultant.objects.create(user=user, **validated_data)
+        for category_data in categories_data:
+            CategoryConsultant.objects.create(consultant=consultant, **category_data)
+        for certificate_data in certificates_data:
+            ImageConsultant.objects.create(consultant=consultant, **certificate_data)
+        user.is_consultant = True
+        user.save()
+        return consultant
