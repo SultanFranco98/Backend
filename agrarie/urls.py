@@ -8,8 +8,9 @@ from rest_framework_simplejwt.views import (
 )
 urlpatterns = [
     path('jet/', include('jet.urls', 'jet')),
-    path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
+    # path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
     path('admin/', admin.site.urls),
     path('api/token/', TokenObtainPairView.as_view()),
     path('api/token/refresh/', TokenRefreshView.as_view()),
+    path('api/v1/', include('users.urls', 'users'))
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
