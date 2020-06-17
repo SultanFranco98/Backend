@@ -1,6 +1,7 @@
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
+from django.utils.safestring import mark_safe
 
 
 class CustomUserManager(BaseUserManager):
@@ -67,6 +68,8 @@ class Consultant(models.Model):
         return '{}'.format(self.user)
 
 
+
+
 class Category(models.Model):
     title = models.CharField(max_length=20, blank=False, null=False, verbose_name='Категория')
 
@@ -76,6 +79,7 @@ class Category(models.Model):
 
     def __str__(self):
         return self.title
+
 
 
 class ImageConsultant(models.Model):
@@ -91,6 +95,14 @@ class ImageConsultant(models.Model):
 
     def __str__(self):
         return '{}'.format(self.consultant)
+
+    def get_certificate(self):
+        return self.certificate_image.url
+
+    def certificate_tag(self):
+        return mark_safe('<img src="%s" />' % self.get_certificate())
+
+    certificate_tag.short_description = 'Сертификаты'
 
 
 class CategoryConsultant(models.Model):
@@ -129,3 +141,17 @@ class Rating(models.Model):
     class Meta:
         verbose_name = "Рейтинг"
         verbose_name_plural = "Рейтинги"
+
+
+class Reviews(models.Model):
+    name = models.CharField(max_length=100, verbose_name='Имя')
+    email = models.EmailField()
+    text = models.TextField(max_length=5000, verbose_name='Сообщение')
+    consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, verbose_name='Консультант', related_name='reviews')
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = "Отзыв"
+        verbose_name_plural = "Отзывы"

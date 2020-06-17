@@ -36,7 +36,7 @@ class RatingStarSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class RatingCreateSerializer(serializers.ModelSerializer):
+class RatingListSerializer(serializers.ModelSerializer):
     user = UsersListSerializer(many=False, read_only=True)
 
     class Meta:
@@ -51,6 +51,18 @@ class RatingCreateSerializer(serializers.ModelSerializer):
             defaults={'star': validated_data.get('star')}
         )
         return rating
+
+
+class ReviewsListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reviews
+        fields = ('consultant', 'text')
+
+
+class ReviewsDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reviews
+        fields = ("id", "name", 'email', "text")
 
 
 class CategoryConsultantListSerializer(serializers.ModelSerializer):
@@ -78,16 +90,12 @@ class ConsultantListSerializer(serializers.ModelSerializer):
 
 
 class ImageConsultantDetailSerializer(serializers.ModelSerializer):
-    consultant = ConsultantListSerializer(many=False)
-
     class Meta:
         model = ImageConsultant
         fields = ('id', 'consultant', 'certificate_image',)
 
 
 class CategoryConsultantDetailSerializer(serializers.ModelSerializer):
-    consultant = ConsultantListSerializer(many=False)
-
     class Meta:
         model = CategoryConsultant
         fields = ('id', 'consultant', 'category',)
@@ -96,10 +104,12 @@ class CategoryConsultantDetailSerializer(serializers.ModelSerializer):
 class ConsultantDetailSerializer(serializers.ModelSerializer):
     user = UsersListSerializer(many=False)
     specialty = CategoryConsultantListSerializer(many=True, read_only=True)
+    reviews = ReviewsDetailSerializer(many=True, read_only=True)
+    middle_star = serializers.FloatField()
 
     class Meta:
         model = Consultant
-        fields = ('id', 'user', 'specialty', 'description',)
+        fields = ('id', 'user', 'specialty', 'description', 'middle_star', 'reviews')
 
 
 class RegistrationClientSerializer(serializers.ModelSerializer):

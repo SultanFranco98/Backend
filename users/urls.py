@@ -10,19 +10,35 @@ urlpatterns = [
 
     path('category/', CategoryViewSet.as_view({'get': 'list'})),
     path('category/<int:pk>/', CategoryViewSet.as_view({'get': 'retrieve'})),
+    path('category/edit/<int:pk>/', CategoryViewSet.as_view({'put': 'update'})),
+    path('category/delete/<int:pk>/', CategoryViewSet.as_view({'delete': 'destroy'})),
     path('category/create', CategoryViewSet.as_view({'post': 'create'})),
 
     path('rating/', RatingViewSet.as_view({'get': 'list'})),
     path('rating/<int:pk>/', RatingViewSet.as_view({'get': 'retrieve'})),
+    path('rating/delete/<int:pk>/', RatingViewSet.as_view({'delete': 'destroy'})),
     path('rating/create', RatingViewSet.as_view({'post': 'create'})),
+
+    path('reviews/', ReviewsViewSet.as_view({'get': 'list'})),
+    path('reviews/<int:pk>/', ReviewsViewSet.as_view({'get': 'retrieve'})),
+    path('reviews/edit/<int:pk>/', ReviewsViewSet.as_view({'put': 'update'})),
+    path('reviews/delete/<int:pk>/', ReviewsViewSet.as_view({'delete': 'destroy'})),
+    path('reviews/create/', ReviewsViewSet.as_view({'post': 'create'})),
+
     path('rating-star/', RatingStarViewSet.as_view({'get': 'list'})),
     path('rating-star/<int:pk>/', RatingStarViewSet.as_view({'get': 'retrieve'})),
+    path('rating-star/edit/<int:pk>/', RatingStarViewSet.as_view({'put': 'update'})),
+    path('rating-star/delete/<int:pk>/', RatingStarViewSet.as_view({'delete': 'destroy'})),
     path('rating-star/create', RatingStarViewSet.as_view({'post': 'create'})),
 
     path('category-consultants/', CategoryConsultantViewSet.as_view({'get': 'list'})),
     path('category-consultants/<int:pk>/', CategoryConsultantViewSet.as_view({'get': 'retrieve'})),
+    path('category-consultants/edit/<int:pk>/', CategoryConsultantViewSet.as_view({'put': 'update'})),
+    path('category-consultants/delete/<int:pk>/', CategoryConsultantViewSet.as_view({'delete': 'destroy'})),
 
     path('certificate-consultant/', ImageConsultantViewSet.as_view({'get': 'list'})),
     path('certificate-consultant/<int:pk>', ImageConsultantViewSet.as_view({'get': 'retrieve'})),
+    path('certificate-consultant/edit/<int:pk>', ImageConsultantViewSet.as_view({'put': 'update'})),
+    path('certificate-consultant/delete/<int:pk>', ImageConsultantViewSet.as_view({'delete': 'destroy'})),
 
 ]
