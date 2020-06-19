@@ -27,9 +27,7 @@ class ConsultantAdmin(admin.ModelAdmin):
     def get_consultant(self, obj):
         return 'Имя:\t{}\n\n' \
                'Фамилия:\t{}\n\n' \
-               'email:\t{}\n\n' \
-               'Телефон:\t{}\n\n'.format(obj.user.first_name, obj.user.last_name, obj.user.email,
-                                         obj.user.phone)
+               'Телефон:\t{}\n\n'.format(obj.user.first_name, obj.user.last_name, obj.user.phone)
 
     get_consultant.short_description = 'Информация о консультанте'
 
@@ -42,20 +40,20 @@ class ConsultantAdmin(admin.ModelAdmin):
 
 class UserAdmin(UserAdmin):
     model = User
-    list_display = ('username', 'email', 'first_name', 'last_name', 'phone', 'is_active', 'is_client', 'is_consultant')
+    list_display = ('email', 'first_name', 'last_name', 'phone', 'is_active', 'is_client', 'is_consultant')
     fieldsets = (
         (None, {'fields': (
-            'username', 'email', 'first_name', 'last_name', 'phone', 'is_active', 'is_client', 'is_consultant',
+            'email', 'first_name', 'last_name', 'phone', 'is_active', 'is_client', 'is_consultant',
             'date_joined')}),
     )
-    search_fields = ('username',)
+    ordering = ('email',)
     readonly_fields = ['date_joined']
 
     add_fieldsets = (
         (None, {
             'classes': ('wide',),
             'fields': (
-                'username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'phone', 'is_active',
+                'email', 'first_name', 'last_name', 'password1', 'password2', 'phone', 'is_active',
                 'is_client', 'is_consultant',
             )}
          ),

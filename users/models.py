@@ -7,30 +7,26 @@ from django.utils.safestring import mark_safe
 class CustomUserManager(BaseUserManager):
     use_in_migrations = True
 
-    def create_user(self, username, email, password, **extra_fields):
+    def create_user(self, email, password, **extra_fields):
 
-        if not username:
-            raise ValueError('Должно быть введено имя пользователя.')
         if email:
             email = self.normalize_email(email)
-        user = self.model(username=username, email=email, **extra_fields)
+        user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, username, email, password, **extra_fields):
+    def create_superuser(self, email, password, **extra_fields):
         extra_fields.setdefault('is_superuser', True)
         extra_fields.setdefault('is_staff', True)
         extra_fields.setdefault('is_active', True)
         if extra_fields.get('is_superuser') is not True:
             raise ValueError('У суперпользователя поле is_superuser должен быть True.')
-        return self.create_user(username, email, password, **extra_fields)
+        return self.create_user(email, password, **extra_fields)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    username = models.CharField(db_index=True, max_length=30, blank=False, unique=True,
-                                verbose_name='Имя пользователя')
-    email = models.EmailField(unique=True, blank=False, verbose_name='Почта')
+    email = models.EmailField(db_index=True, unique=True, blank=False, verbose_name='Почта')
     password = models.CharField(max_length=128, blank=False, null=False, verbose_name='Пароль')
     first_name = models.CharField(max_length=30, blank=False, null=False, verbose_name='Имя')
     last_name = models.CharField(max_length=30, blank=False, null=False, verbose_name='Фамилия')
@@ -42,13 +38,12 @@ class User(AbstractBaseUser, PermissionsMixin):
     is_staff = models.BooleanField(default=False, verbose_name='Сотрудник')
     date_joined = models.DateTimeField(auto_now_add=True, verbose_name='Дата регистрации')
 
-    USERNAME_FIELD = 'username'
-    REQUIRED_FIELDS = ['email']
+    USERNAME_FIELD = 'email'
 
     objects = CustomUserManager()
 
     def __str__(self):
-        return self.username
+        return self.email
 
     class Meta:
         verbose_name = 'Пользователь'
@@ -57,7 +52,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Consultant(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
-    description = models.TextField(blank=False, null=False, verbose_name='Описание')
+    description = models.TextField(blank=True, null=True, verbose_name='Описание')
     comment = models.TextField(max_length=200, blank=True, null=True, verbose_name='Комментарии')
 
     class Meta:

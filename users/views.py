@@ -1,11 +1,17 @@
 from django.db.models.functions import Concat
 from rest_framework import status
+from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import *
 from django.db.models import Avg
 from .permissions import IsClient, IsConsultant
+
+
+class CustomTokenView(TokenObtainPairView):
+    serializer_class = CustomTokenSerializer
 
 
 class RegistrationClientViewSet(ModelViewSet):
@@ -31,18 +37,24 @@ class RatingViewSet(ModelViewSet):
 
 class ConsultantViewSet(ReadOnlyModelViewSet):
     permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    serializer_class = ConsultantListSerializer
 
     def get_queryset(self):
-        consultant = Consultant.objects.filter(user__is_active=False).annotate(
-            middle_star=(Avg("ratings__star")),
-        )
+        pk = self.kwargs['pk']
+        specialty = CategoryConsultant.objects.filter(category=pk)
+        consultant = []
+        count = 0
+        for spec in specialty:
+            consultant += Consultant.objects.filter(id=specialty[count].consultant.pk).annotate(
+                middle_star=(Avg("ratings__star")),
+            )
+            count += 1
         return consultant
 
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return ConsultantListSerializer
-        elif self.action == 'retrieve':
-            return ConsultantDetailSerializer
+    def retrieve(self, request, pk, *args, **kwargs):
+        queryset = get_object_or_404(Consultant, id=pk)
+        serializer = ConsultantDetailSerializer(queryset)
+        return Response(serializer.data, status=status.HTTP_200_OK)
 
 
 class CategoryConsultantViewSet(ModelViewSet):

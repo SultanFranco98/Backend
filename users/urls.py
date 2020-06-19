@@ -1,14 +1,20 @@
-from django.urls import path, include
+from django.urls import path
 from .views import *
+from rest_framework_simplejwt.views import (
+    TokenRefreshView,
+)
 
 urlpatterns = [
+    path('token/', CustomTokenView.as_view()),
+    path('token/refresh/', TokenRefreshView.as_view()),
+
     path('signup/client', RegistrationClientViewSet.as_view({'post': 'create'})),
     path('signup/consultant', RegistrationConsultantViewSet.as_view({'post': 'create'})),
 
     path('profile/', UserViewSet.as_view({'get': 'list'})),
 
-    path('consultants/', ConsultantViewSet.as_view({'get': 'list'})),
     path('consultants/<int:pk>/', ConsultantViewSet.as_view({'get': 'retrieve'})),
+    path('specialty/<int:pk>/consultants/', ConsultantViewSet.as_view({'get': 'list'})),
 
     path('category/', CategoryViewSet.as_view({'get': 'list'})),
     path('category/<int:pk>/', CategoryViewSet.as_view({'get': 'retrieve'})),
@@ -21,6 +27,7 @@ urlpatterns = [
     path('specialty/edit/<int:pk>/', SpecialtyViewSet.as_view({'put': 'update'})),
     path('specialty/delete/<int:pk>/', SpecialtyViewSet.as_view({'delete': 'destroy'})),
     path('specialty/create', SpecialtyViewSet.as_view({'post': 'create'})),
+
 
 
     path('rating/', RatingViewSet.as_view({'get': 'list'})),

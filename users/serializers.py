@@ -1,5 +1,15 @@
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 from rest_framework import serializers
 from .models import *
+
+
+class CustomTokenSerializer(TokenObtainPairSerializer):
+
+    def validate(self, attrs):
+        data = super(CustomTokenSerializer, self).validate(attrs)
+        data.update({'status_client': self.user.is_client})
+        data.update({'status_consultant': self.user.is_consultant})
+        return data
 
 
 class UsersListSerializer(serializers.ModelSerializer):
@@ -15,13 +25,14 @@ class UsersDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'id', 'username', 'email', 'password', 'first_name', 'last_name', 'photo', 'phone')
+            'id', 'email', 'password', 'first_name', 'last_name', 'photo', 'phone')
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
         fields = '__all__'
+
 
 class SpecialtySerializer(serializers.ModelSerializer):
     class Meta:
@@ -128,7 +139,7 @@ class RegistrationClientSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'username', 'email', 'password', 'password1', 'first_name', 'last_name', 'photo', 'phone')
+            'email', 'password', 'password1', 'first_name', 'last_name', 'photo', 'phone')
         read_only_fields = ('is_client', 'is_consultant', 'is_active')
 
     def create(self, validated_data):
