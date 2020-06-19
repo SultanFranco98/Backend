@@ -9,7 +9,8 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = ['134.122.76.224']
+# ALLOWED_HOSTS = ['134.122.76.224']
+ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'jet.dashboard',
@@ -23,6 +24,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_jwt',
     'users.apps.UsersConfig',
+    'drf_yasg',
 ]
 
 MIDDLEWARE = [
