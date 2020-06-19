@@ -68,10 +68,8 @@ class Consultant(models.Model):
         return '{}'.format(self.user)
 
 
-
-
 class Category(models.Model):
-    title = models.CharField(max_length=20, blank=False, null=False, verbose_name='Категория')
+    title = models.CharField(max_length=100, blank=False, null=False, verbose_name='Категория')
 
     class Meta:
         verbose_name = 'Категория'
@@ -80,6 +78,16 @@ class Category(models.Model):
     def __str__(self):
         return self.title
 
+
+class Specialty(models.Model):
+    title = models.CharField(max_length=100, blank=False, null=False, verbose_name='Специальность')
+
+    class Meta:
+        verbose_name = 'Специальность'
+        verbose_name_plural = 'Специальности'
+
+    def __str__(self):
+        return self.title
 
 
 class ImageConsultant(models.Model):
@@ -108,7 +116,8 @@ class ImageConsultant(models.Model):
 class CategoryConsultant(models.Model):
     consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, blank=False, null=False,
                                    related_name='specialty', verbose_name='Консультант')
-    category = models.ForeignKey(Category, on_delete=models.CASCADE, blank=False, null=False, verbose_name='Категории')
+    category = models.ForeignKey(Specialty, on_delete=models.CASCADE, blank=False, null=False,
+                                 verbose_name='Специальность')
 
     class Meta:
         verbose_name = 'Специальность'
@@ -132,7 +141,8 @@ class RatingStart(models.Model):
 
 class Rating(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
-    consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, verbose_name='Консультант', related_name="ratings")
+    consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, verbose_name='Консультант',
+                                   related_name="ratings")
     star = models.ForeignKey(RatingStart, on_delete=models.CASCADE, verbose_name='Звезда')
 
     def __str__(self):
@@ -147,7 +157,8 @@ class Reviews(models.Model):
     name = models.CharField(max_length=100, verbose_name='Имя')
     email = models.EmailField()
     text = models.TextField(max_length=5000, verbose_name='Сообщение')
-    consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, verbose_name='Консультант', related_name='reviews')
+    consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, verbose_name='Консультант',
+                                   related_name='reviews')
 
     def __str__(self):
         return self.name

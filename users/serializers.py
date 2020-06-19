@@ -7,8 +7,6 @@ class UsersListSerializer(serializers.ModelSerializer):
         model = User
         fields = (
             'id', 'email', 'first_name', 'last_name', 'photo')
-        read_only_fields = ('is_client', 'is_consultant',
-                            'is_active')
 
 
 class UsersDetailSerializer(serializers.ModelSerializer):
@@ -17,16 +15,17 @@ class UsersDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'id', 'username', 'email', 'password', 'first_name', 'last_name', 'photo', 'phone', 'is_client',
-            'is_consultant',
-            'is_active')
-        read_only_fields = ('is_client', 'is_consultant',
-                            'is_active')
+            'id', 'username', 'email', 'password', 'first_name', 'last_name', 'photo', 'phone')
 
 
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
+        fields = '__all__'
+
+class SpecialtySerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Specialty
         fields = '__all__'
 
 

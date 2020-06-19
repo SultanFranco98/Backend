@@ -1,8 +1,11 @@
 from django.db.models.functions import Concat
+from rest_framework import status
+from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.permissions import AllowAny, IsAdminUser
 from .serializers import *
 from django.db.models import Avg
+from .permissions import IsClient, IsConsultant
 
 
 class RegistrationClientViewSet(ModelViewSet):
@@ -19,7 +22,7 @@ class RegistrationConsultantViewSet(ModelViewSet):
 
 class RatingViewSet(ModelViewSet):
     queryset = Rating.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = [IsClient | IsAdminUser]
     serializer_class = RatingListSerializer
 
     def perform_create(self, serializer):
@@ -27,11 +30,11 @@ class RatingViewSet(ModelViewSet):
 
 
 class ConsultantViewSet(ReadOnlyModelViewSet):
-    permission_classes = (AllowAny,)
+    permission_classes = [IsClient | IsConsultant | IsAdminUser]
 
     def get_queryset(self):
         consultant = Consultant.objects.filter(user__is_active=False).annotate(
-            middle_star=(Avg("ratings__star"))
+            middle_star=(Avg("ratings__star")),
         )
         return consultant
 
@@ -44,7 +47,7 @@ class ConsultantViewSet(ReadOnlyModelViewSet):
 
 class CategoryConsultantViewSet(ModelViewSet):
     queryset = CategoryConsultant.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = [IsAdminUser]
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -55,7 +58,7 @@ class CategoryConsultantViewSet(ModelViewSet):
 
 class ImageConsultantViewSet(ModelViewSet):
     queryset = ImageConsultant.objects.all()
-    permission_classes = (AllowAny,)
+    permission_classes = [IsAdminUser]
 
     def get_serializer_class(self):
         if self.action == 'list':
@@ -65,19 +68,25 @@ class ImageConsultantViewSet(ModelViewSet):
 
 
 class CategoryViewSet(ModelViewSet):
-    permission_classes = (AllowAny,)
+    permission_classes = [IsAdminUser]
     queryset = Category.objects.all()
     serializer_class = CategorySerializer
 
 
+class SpecialtyViewSet(ModelViewSet):
+    permission_classes = [IsAdminUser]
+    queryset = Specialty.objects.all()
+    serializer_class = SpecialtySerializer
+
+
 class RatingStarViewSet(ModelViewSet):
-    permission_classes = (AllowAny,)
+    permission_classes = [IsAdminUser]
     queryset = RatingStart.objects.all()
     serializer_class = RatingStarSerializer
 
 
 class ReviewsViewSet(ModelViewSet):
-    permission_classes = (AllowAny,)
+    permission_classes = [IsClient | IsAdminUser]
     queryset = Reviews.objects.all()
 
     def perform_create(self, serializer):
@@ -90,3 +99,10 @@ class ReviewsViewSet(ModelViewSet):
         elif self.action == 'retrieve' or self.action == 'list':
             return ReviewsDetailSerializer
 
+
+class UserViewSet(ReadOnlyModelViewSet):
+    permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    serializer_class = UsersDetailSerializer
+
+    def get_queryset(self):
+        return User.objects.filter(id=self.request.user.pk)

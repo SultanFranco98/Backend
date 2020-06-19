@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.auth.admin import UserAdmin
 
 from .models import *
 
@@ -20,15 +21,14 @@ class ImageConsultantInline(admin.TabularInline):
 
 class ConsultantAdmin(admin.ModelAdmin):
     inlines = (CategoryConsultantInline, ImageConsultantInline)
-    fields = ('get_consultant', 'description', 'comment')
+    fields = ('user', 'get_consultant', 'description', 'comment')
     readonly_fields = ('get_consultant', 'description', 'comment')
 
     def get_consultant(self, obj):
-        return 'Логин:\t{}\n\n' \
-               'Имя:\t{}\n\n' \
+        return 'Имя:\t{}\n\n' \
                'Фамилия:\t{}\n\n' \
                'email:\t{}\n\n' \
-               'Телефон:\t{}\n\n'.format(obj.user.username, obj.user.first_name, obj.user.last_name, obj.user.email,
+               'Телефон:\t{}\n\n'.format(obj.user.first_name, obj.user.last_name, obj.user.email,
                                          obj.user.phone)
 
     get_consultant.short_description = 'Информация о консультанте'
@@ -40,8 +40,31 @@ class ConsultantAdmin(admin.ModelAdmin):
         return False
 
 
-admin.site.register(User)
+class UserAdmin(UserAdmin):
+    model = User
+    list_display = ('username', 'email', 'first_name', 'last_name', 'phone', 'is_active', 'is_client', 'is_consultant')
+    fieldsets = (
+        (None, {'fields': (
+            'username', 'email', 'first_name', 'last_name', 'phone', 'is_active', 'is_client', 'is_consultant',
+            'date_joined')}),
+    )
+    search_fields = ('username',)
+    readonly_fields = ['date_joined']
+
+    add_fieldsets = (
+        (None, {
+            'classes': ('wide',),
+            'fields': (
+                'username', 'email', 'first_name', 'last_name', 'password1', 'password2', 'phone', 'is_active',
+                'is_client', 'is_consultant',
+            )}
+         ),
+    )
+
+
+admin.site.register(User, UserAdmin)
 admin.site.register(RatingStart)
 admin.site.register(Rating)
 admin.site.register(Consultant, ConsultantAdmin)
 admin.site.register(Category)
+admin.site.register(Specialty)
