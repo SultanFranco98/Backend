@@ -45,7 +45,7 @@ class ConsultantViewSet(ReadOnlyModelViewSet):
         consultant = []
         count = 0
         for spec in specialty:
-            consultant += Consultant.objects.filter(id=specialty[count].consultant.pk).annotate(
+            consultant += Consultant.objects.filter(id=specialty[count].consultant.pk, user__is_active=True).annotate(
                 middle_star=(Avg("ratings__star")),
             )
             count += 1
