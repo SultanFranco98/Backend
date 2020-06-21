@@ -3,7 +3,6 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from .yasg import urlpatterns as doc_urls
-from djoser.serializers import UserSerializer
 
 urlpatterns = [
                   path('jet/', include('jet.urls', 'jet')),
