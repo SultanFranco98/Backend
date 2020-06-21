@@ -57,44 +57,10 @@ class ConsultantViewSet(ReadOnlyModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class CategoryConsultantViewSet(ModelViewSet):
-    queryset = CategoryConsultant.objects.all()
-    permission_classes = [IsAdminUser]
-
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return CategoryConsultantListSerializer
-        elif self.action == 'retrieve' or self.action == 'update' or self.action == 'destroy':
-            return CategoryConsultantDetailSerializer
-
-
-class ImageConsultantViewSet(ModelViewSet):
-    queryset = ImageConsultant.objects.all()
-    permission_classes = [IsAdminUser]
-
-    def get_serializer_class(self):
-        if self.action == 'list':
-            return ImageConsultantListSerializer
-        elif self.action == 'retrieve' or self.action == 'update' or self.action == 'destroy':
-            return ImageConsultantDetailSerializer
-
-
-class CategoryViewSet(ModelViewSet):
-    permission_classes = [IsAdminUser]
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-
-
 class SpecialtyViewSet(ModelViewSet):
     permission_classes = [IsAdminUser]
     queryset = Specialty.objects.all()
     serializer_class = SpecialtySerializer
-
-
-class RatingStarViewSet(ModelViewSet):
-    permission_classes = [IsAdminUser]
-    queryset = RatingStart.objects.all()
-    serializer_class = RatingStarSerializer
 
 
 class ReviewsViewSet(ModelViewSet):

@@ -28,12 +28,6 @@ class UsersDetailSerializer(serializers.ModelSerializer):
             'id', 'email', 'password', 'first_name', 'last_name', 'photo', 'phone')
 
 
-class CategorySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Category
-        fields = '__all__'
-
-
 class SpecialtySerializer(serializers.ModelSerializer):
     class Meta:
         model = Specialty

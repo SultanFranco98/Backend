@@ -1,4 +1,5 @@
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
+from django.template.defaultfilters import truncatechars
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
 from django.utils.safestring import mark_safe
@@ -62,16 +63,10 @@ class Consultant(models.Model):
     def __str__(self):
         return '{}'.format(self.user)
 
+    def short_description(self):
+        return truncatechars(self.description, 270)
 
-class Category(models.Model):
-    title = models.CharField(max_length=100, blank=False, null=False, verbose_name='Категория')
-
-    class Meta:
-        verbose_name = 'Категория'
-        verbose_name_plural = 'Категории'
-
-    def __str__(self):
-        return self.title
+    short_description.short_description = 'О себе'
 
 
 class Specialty(models.Model):

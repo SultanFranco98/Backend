@@ -4,6 +4,10 @@ from django.contrib.auth.admin import UserAdmin
 from .models import *
 
 
+class SpecialtyAdmin(admin.ModelAdmin):
+    list_display = ('title',)
+
+
 class CategoryConsultantInline(admin.TabularInline):
     model = CategoryConsultant
 
@@ -21,8 +25,9 @@ class ImageConsultantInline(admin.TabularInline):
 
 class ConsultantAdmin(admin.ModelAdmin):
     inlines = (CategoryConsultantInline, ImageConsultantInline)
+    list_display = ('user', 'get_consultant', 'short_description')
     fields = ('user', 'get_consultant', 'description', 'comment')
-    readonly_fields = ('get_consultant', 'description', 'comment')
+    readonly_fields = ('get_consultant',)
 
     def get_consultant(self, obj):
         return 'Имя:\t{}\n\n' \
@@ -64,5 +69,4 @@ admin.site.register(User, UserAdmin)
 admin.site.register(RatingStart)
 admin.site.register(Rating)
 admin.site.register(Consultant, ConsultantAdmin)
-admin.site.register(Category)
-admin.site.register(Specialty)
+admin.site.register(Specialty, SpecialtyAdmin)
