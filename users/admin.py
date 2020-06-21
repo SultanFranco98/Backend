@@ -36,12 +36,6 @@ class ConsultantAdmin(admin.ModelAdmin):
 
     get_consultant.short_description = 'Информация о консультанте'
 
-    def has_add_permission(self, request):
-        return False
-
-    def has_delete_permission(self, request, obj=None):
-        return False
-
 
 class UserAdmin(UserAdmin):
     model = User
