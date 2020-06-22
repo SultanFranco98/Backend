@@ -1,6 +1,8 @@
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
 from rest_framework import serializers
 from .models import *
+from agrarie.settings import SIMPLE_JWT
+from datetime import timedelta
 
 
 class CustomTokenSerializer(TokenObtainPairSerializer):
@@ -9,6 +11,8 @@ class CustomTokenSerializer(TokenObtainPairSerializer):
         data = super(CustomTokenSerializer, self).validate(attrs)
         data.update({'status_client': self.user.is_client})
         data.update({'status_consultant': self.user.is_consultant})
+        data.update({'time access': SIMPLE_JWT['ACCESS_TOKEN_LIFETIME']})
+        data.update({'time refresh': SIMPLE_JWT['REFRESH_TOKEN_LIFETIME']})
         return data
 
 
