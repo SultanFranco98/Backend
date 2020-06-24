@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth import settings
 
 
 class Category(models.Model):
@@ -34,3 +35,33 @@ class Types(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class Forum(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь')
+    category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категории')
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, verbose_name='Подкатегории')
+    title = models.CharField(max_length=100, verbose_name='Заголовок')
+    description = models.TextField(max_length=5000, verbose_name='Описание')
+    pub_date = models.DateField(auto_now_add=True, verbose_name='Дата публикации')
+
+    class Meta:
+        verbose_name = 'Вопрос'
+        verbose_name_plural = 'Вопросы'
+
+    def __str__(self):
+        return self.title
+
+
+class Comment(models.Model):
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь')
+    forum = models.ForeignKey(Forum, on_delete=models.CASCADE, related_name='comments', verbose_name='Форум')
+    description = models.TextField(max_length=5000, verbose_name='Описание')
+    pub_date = models.DateField(auto_now_add=True, verbose_name='Дата публикации')
+
+    class Meta:
+        verbose_name = 'Комментарии'
+        verbose_name_plural = 'Комментарии'
+
+    def __str__(self):
+        return '{}'.format(self.user)
