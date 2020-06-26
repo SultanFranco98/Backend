@@ -1,4 +1,3 @@
-from django.db.models.functions import Concat
 from rest_framework import status
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
@@ -12,23 +11,25 @@ from .permissions import IsClient, IsConsultant
 
 class CustomTokenView(TokenObtainPairView):
     serializer_class = CustomTokenSerializer
+    permission_classes = [AllowAny]
 
 
 class RegistrationClientViewSet(ModelViewSet):
-    permission_classes = (AllowAny,)
+    permission_classes = [AllowAny]
     queryset = User.objects.all()
     serializer_class = RegistrationClientSerializer
 
 
 class RegistrationConsultantViewSet(ModelViewSet):
-    permission_classes = (AllowAny,)
+    permission_classes = [AllowAny]
     queryset = Consultant.objects.all()
     serializer_class = RegistrationConsultantSerializer
 
 
 class RatingViewSet(ModelViewSet):
     queryset = Rating.objects.all()
-    permission_classes = [IsClient | IsAdminUser]
+    # permission_classes = [IsClient | IsAdminUser]
+    permission_classes = [AllowAny]
     serializer_class = RatingListSerializer
 
     def perform_create(self, serializer):
@@ -36,7 +37,8 @@ class RatingViewSet(ModelViewSet):
 
 
 class ConsultantViewSet(ReadOnlyModelViewSet):
-    permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    # permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    permission_classes = [AllowAny]
     serializer_class = ConsultantListSerializer
 
     def get_queryset(self):
@@ -58,13 +60,15 @@ class ConsultantViewSet(ReadOnlyModelViewSet):
 
 
 class SpecialtyViewSet(ModelViewSet):
-    permission_classes = [IsAdminUser]
+    # permission_classes = [IsAdminUser]
+    permission_classes = [AllowAny]
     queryset = Specialty.objects.all()
     serializer_class = SpecialtySerializer
 
 
 class ReviewsViewSet(ModelViewSet):
-    permission_classes = [IsClient | IsAdminUser]
+    # permission_classes = [IsClient | IsAdminUser]
+    permission_classes = [AllowAny]
     queryset = Reviews.objects.all()
 
     def perform_create(self, serializer):
@@ -79,7 +83,8 @@ class ReviewsViewSet(ModelViewSet):
 
 
 class UserViewSet(ReadOnlyModelViewSet):
-    permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    # permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    permission_classes = [AllowAny]
     serializer_class = UsersDetailSerializer
 
     def get_queryset(self):

@@ -56,7 +56,7 @@ class Forum(models.Model):
 class Comment(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь')
     forum = models.ForeignKey(Forum, on_delete=models.CASCADE, related_name='comments', verbose_name='Форум')
-    description = models.TextField(max_length=5000, verbose_name='Описание')
+    description = models.TextField(max_length=5000, verbose_name='Комментарии')
     pub_date = models.DateField(auto_now_add=True, verbose_name='Дата публикации')
 
     class Meta:
