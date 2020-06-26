@@ -9,8 +9,8 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG')
 
-# ALLOWED_HOSTS = ['134.122.76.224']
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['134.122.76.224']
+# ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'jet.dashboard',
@@ -128,9 +128,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 JET_SIDE_MENU_COMPACT = True
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_AUTHENTICATION_CLASSES': (
-    #     'rest_framework_simplejwt.authentication.JWTAuthentication',
-    # ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     )
