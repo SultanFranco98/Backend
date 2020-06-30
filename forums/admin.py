@@ -18,8 +18,13 @@ class TypesAdmin(admin.ModelAdmin):
     list_display = ['title', 'subcategory']
 
 
+class SubTypesAdmin(admin.ModelAdmin):
+    list_display = ['title', 'type']
+
+
 admin.site.register(Category)
 admin.site.register(SubCategory, SubCategoryAdmin)
 admin.site.register(Types, TypesAdmin)
+admin.site.register(SubTypes, SubTypesAdmin)
 admin.site.register(Forum, ForumAdmin)
 admin.site.register(Comment)
