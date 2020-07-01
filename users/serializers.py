@@ -63,7 +63,8 @@ class RatingListSerializer(serializers.ModelSerializer):
 class ReviewsListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reviews
-        fields = ('consultant', 'text')
+        fields = ('id', 'consultant', 'text')
+        read_only_fields = ('consultant',)
 
 
 class ReviewsDetailSerializer(serializers.ModelSerializer):
