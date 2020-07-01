@@ -5,7 +5,8 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import *
-from django.db.models import Avg
+from django.db.models import Avg, FloatField
+from rest_framework.exceptions import PermissionDenied
 from .permissions import IsClient, IsConsultant
 
 
@@ -48,7 +49,8 @@ class ConsultantViewSet(ReadOnlyModelViewSet):
         count = 0
         for spec in specialty:
             consultant += Consultant.objects.filter(id=specialty[count].consultant.pk, user__is_active=True).annotate(
-                middle_star=(Avg("ratings__star")),
+                middle_star=models.Sum(models.F('ratings__star__value')) / models.Count(
+                    models.F('ratings')),
             )
             count += 1
         return consultant
@@ -85,7 +87,21 @@ class ReviewsViewSet(ModelViewSet):
 class UserViewSet(ReadOnlyModelViewSet):
     # permission_classes = [IsClient | IsConsultant | IsAdminUser]
     permission_classes = [AllowAny]
-    serializer_class = UsersDetailSerializer
 
     def get_queryset(self):
-        return User.objects.filter(id=self.request.user.pk)
+        try:
+            if self.request.user.is_consultant:
+                return Consultant.objects.filter(user__id=self.request.user.pk)
+            elif self.request.user.is_client:
+                return User.objects.filter(id=self.request.user.pk)
+        except:
+            raise PermissionDenied
+
+    def get_serializer_class(self):
+        try:
+            if self.request.user.is_consultant:
+                return ProfileConsultantSerializer
+            elif self.request.user.is_client:
+                return UsersListSerializer
+        except:
+            raise PermissionDenied
