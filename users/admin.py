@@ -80,8 +80,11 @@ class RatingAdmin(admin.ModelAdmin):
     get_consultant.short_description = 'Информация о консультанте'
 
 
+class RatingStartAdmin(admin.ModelAdmin):
+    list_display = ['id', 'value']
+
 admin.site.register(User, UserAdmin)
-admin.site.register(RatingStart)
+admin.site.register(RatingStart, RatingStartAdmin)
 admin.site.register(Rating, RatingAdmin)
 admin.site.register(Consultant, ConsultantAdmin)
 admin.site.register(Specialty, SpecialtyAdmin)
