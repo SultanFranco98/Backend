@@ -20,6 +20,12 @@ class TypesSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
+class SubTypesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = SubTypes
+        fields = '__all__'
+
+
 class CommentSerializer(serializers.ModelSerializer):
     class Meta:
         model = Comment
@@ -40,8 +46,6 @@ class ForumCreateSerializer(serializers.ModelSerializer):
         model = Forum
         fields = ['id', 'user', 'category', 'subcategory', 'title', 'description', 'pub_date']
         read_only_fields = ['user', 'pub_date']
-
-
 
 
 class ForumListSerializer(serializers.ModelSerializer):

@@ -1,4 +1,4 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.permissions import IsAdminUser
 from users.permissions import IsClient, IsConsultant
 from rest_framework.permissions import AllowAny
@@ -27,6 +27,12 @@ class TypesViewSet(ModelViewSet):
     serializer_class = TypesSerializer
 
 
+class SubTypesViewSet(ModelViewSet):
+    permission_classes = [IsAdminUser]
+    queryset = SubTypes.objects.all()
+    serializer_class = SubTypesSerializer
+
+
 class ForumViewSet(ModelViewSet):
     # permission_classes = [IsClient | IsAdminUser]
     permission_classes = [AllowAny]
@@ -36,7 +42,7 @@ class ForumViewSet(ModelViewSet):
         serializer.save(user=self.request.user)
 
     def get_serializer_class(self):
-        if  self.action == 'list' or self.action == 'update' or self.action == 'destroy':
+        if self.action == 'list' or self.action == 'update' or self.action == 'destroy':
             return ForumListSerializer
         elif self.action == 'retrieve':
             return ForumDetailSerializer
@@ -52,3 +58,30 @@ class CommentViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+
+class SubCategoriesByCategoriesViewSet(ReadOnlyModelViewSet):
+    permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    serializer_class = SubCategorySerializer
+
+    def get_queryset(self):
+        queryset = SubCategory.objects.filter(category_id=self.kwargs["pk"])
+        return queryset
+
+
+class TypesBySubCategoriesViewSet(ReadOnlyModelViewSet):
+    permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    serializer_class = TypesSerializer
+
+    def get_queryset(self):
+        queryset = Types.objects.filter(subcategory_id=self.kwargs["pk"])
+        return queryset
+
+
+class SubTypesByTypesViewSet(ReadOnlyModelViewSet):
+    permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    serializer_class = SubTypesSerializer
+
+    def get_queryset(self):
+        queryset = SubTypes.objects.filter(type_id=self.kwargs["pk"])
+        return queryset

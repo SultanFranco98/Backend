@@ -37,6 +37,18 @@ class Types(models.Model):
         return self.title
 
 
+class SubTypes(models.Model):
+    title = models.CharField(max_length=100, blank=False, null=False, verbose_name='Подвиды')
+    type = models.ForeignKey(Types, on_delete=models.CASCADE, verbose_name='Вид')
+
+    class Meta:
+        verbose_name = 'Подвид'
+        verbose_name_plural = 'Подвиды'
+
+    def __str__(self):
+        return self.title
+
+
 class Forum(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категории')

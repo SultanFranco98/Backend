@@ -19,4 +19,8 @@ urlpatterns = [
     path('comments/edit/<int:pk>', CommentViewSet.as_view({'put': 'update'})),
     path('comments/delete/<int:pk>', CommentViewSet.as_view({'delete': 'destroy'})),
     path('comments/create', CommentViewSet.as_view({'post': 'create'})),
+
+    path('category/<int:pk>/subcategories', SubCategoriesByCategoriesViewSet.as_view({'get': 'list'})),
+    path('subcategory/<int:pk>/types', TypesBySubCategoriesViewSet.as_view({'get': 'list'})),
+    path('type/<int:pk>/subtypes', SubTypesByTypesViewSet.as_view({'get': 'list'})),
 ]
