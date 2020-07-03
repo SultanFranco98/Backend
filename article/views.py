@@ -11,7 +11,7 @@ from rest_framework.generics import get_object_or_404
 
 
 class VoteViewSet(ModelViewSet):
-    permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    # permission_classes = [IsClient | IsConsultant | IsAdminUser]
     serializer_class = VoteSerializer
 
     def get_queryset(self):
@@ -30,7 +30,7 @@ class VoteViewSet(ModelViewSet):
 
 
 class ArticleViewSet(ModelViewSet):
-    permission_classes = [IsConsultant | IsAdminUser]
+    # permission_classes = [IsConsultant | IsAdminUser]
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
 

@@ -61,7 +61,7 @@ class CommentViewSet(ModelViewSet):
 
 
 class SubCategoriesByCategoriesViewSet(ReadOnlyModelViewSet):
-    permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    # permission_classes = [IsClient | IsConsultant | IsAdminUser]
     serializer_class = SubCategorySerializer
 
     def get_queryset(self):
@@ -70,7 +70,7 @@ class SubCategoriesByCategoriesViewSet(ReadOnlyModelViewSet):
 
 
 class TypesBySubCategoriesViewSet(ReadOnlyModelViewSet):
-    permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    # permission_classes = [IsClient | IsConsultant | IsAdminUser]
     serializer_class = TypesSerializer
 
     def get_queryset(self):
@@ -79,7 +79,7 @@ class TypesBySubCategoriesViewSet(ReadOnlyModelViewSet):
 
 
 class SubTypesByTypesViewSet(ReadOnlyModelViewSet):
-    permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    # permission_classes = [IsClient | IsConsultant | IsAdminUser]
     serializer_class = SubTypesSerializer
 
     def get_queryset(self):
