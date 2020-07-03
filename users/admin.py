@@ -83,9 +83,15 @@ class RatingAdmin(admin.ModelAdmin):
 class RatingStartAdmin(admin.ModelAdmin):
     list_display = ['id', 'value']
 
+
+class ReviewsAdmin(admin.ModelAdmin):
+    list_display = ['consultant', 'text', 'name', 'email']
+
+
 admin.site.register(User, UserAdmin)
 admin.site.register(RatingStart, RatingStartAdmin)
 admin.site.register(Rating, RatingAdmin)
 admin.site.register(Consultant, ConsultantAdmin)
 admin.site.register(Specialty, SpecialtyAdmin)
+admin.site.register(Reviews, ReviewsAdmin)
 admin.site.unregister(Group)
