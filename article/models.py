@@ -1,13 +1,15 @@
 from django.db import models
 from django.contrib.auth import settings
 from users.models import Consultant
-from forums.models import Category, SubCategory
+from forums.models import Category, SubCategory, Types, SubTypes
 
 
 class Article(models.Model):
     consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, verbose_name='Автор')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
     subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, verbose_name='Подкатегория')
+    types = models.ForeignKey(Types, on_delete=models.CASCADE, verbose_name='Вид', blank=True, null=True)
+    subtypes = models.ForeignKey(SubTypes, on_delete=models.CASCADE, verbose_name='Подвид', blank=True, null=True)
     title = models.CharField(max_length=100, verbose_name='Заголовок')
     text = models.TextField(verbose_name='Текст')
     pub_date = models.DateField(auto_now_add=True, verbose_name='Дата публикации')
