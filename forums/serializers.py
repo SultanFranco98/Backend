@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from .models import *
+from users.serializers import UsersListSerializer
 
 
 class CategorySerializer(serializers.ModelSerializer):
@@ -27,6 +28,8 @@ class SubTypesSerializer(serializers.ModelSerializer):
 
 
 class CommentSerializer(serializers.ModelSerializer):
+    user = UsersListSerializer(read_only=True, many=False)
+
     class Meta:
         model = Comment
         fields = ['id', 'user', 'forum', 'description', 'pub_date']

@@ -1,9 +1,10 @@
 from rest_framework import serializers
 from .models import *
+from users.serializers import UsersListSerializer
 
 
 class VoteSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    user = UsersListSerializer(read_only=True, many=False)
     article = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
