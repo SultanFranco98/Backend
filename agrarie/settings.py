@@ -25,6 +25,7 @@ INSTALLED_APPS = [
     'rest_framework_jwt',
     'users.apps.UsersConfig',
     'forums.apps.ForumsConfig',
+    'article.apps.ArticleConfig',
     'corsheaders',
     'drf_yasg',
 ]

@@ -17,16 +17,13 @@ urlpatterns = [
     path('specialty/<int:pk>/consultants/', ConsultantViewSet.as_view({'get': 'list'})),
 
     path('specialty/', SpecialtyViewSet.as_view({'get': 'list'})),
-    path('specialty/<int:pk>/', SpecialtyViewSet.as_view({'get': 'retrieve'})),
-    path('specialty/edit/<int:pk>/', SpecialtyViewSet.as_view({'put': 'update'})),
-    path('specialty/delete/<int:pk>/', SpecialtyViewSet.as_view({'delete': 'destroy'})),
     path('specialty/create', SpecialtyViewSet.as_view({'post': 'create'})),
 
 
-    path('rating/', RatingViewSet.as_view({'get': 'list'})),
-    path('rating/<int:pk>/', RatingViewSet.as_view({'get': 'retrieve'})),
-    path('rating/delete/<int:pk>/', RatingViewSet.as_view({'delete': 'destroy'})),
-    path('rating/create', RatingViewSet.as_view({'post': 'create'})),
+    path('ratings/', RatingViewSet.as_view({'get': 'list'})),
+    path('ratings/<int:pk>/', RatingViewSet.as_view({'get': 'retrieve'})),
+    path('ratings/delete/<int:pk>/', RatingViewSet.as_view({'delete': 'destroy'})),
+    path('ratings/create', RatingViewSet.as_view({'post': 'create'})),
 
     path('reviews/', ReviewsViewSet.as_view({'get': 'list'})),
     path('reviews/<int:pk>/', ReviewsViewSet.as_view({'get': 'retrieve'})),

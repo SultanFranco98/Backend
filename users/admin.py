@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-
+from django.contrib.auth.models import Group
 from .models import *
 
 
@@ -59,8 +59,33 @@ class UserAdmin(UserAdmin):
     )
 
 
+class RatingAdmin(admin.ModelAdmin):
+    list_display = ['user', 'consultant', 'star']
+    fields = ['user', 'get_user', 'consultant', 'get_consultant', 'star']
+    readonly_fields = ['get_user', 'get_consultant']
+
+    def get_user(self, obj):
+        return 'Имя:\t{}\n\n' \
+               'Фамилия:\t{}\n\n' \
+               'Телефон:\t{}\n\n'.format(obj.user.first_name, obj.user.last_name, obj.user.phone)
+
+    get_user.short_description = 'Информация о клиенте'
+
+    def get_consultant(self, obj):
+        return 'Имя:\t{}\n\n' \
+               'Фамилия:\t{}\n\n' \
+               'Телефон:\t{}\n\n'.format(obj.consultant.user.first_name, obj.consultant.user.last_name,
+                                         obj.consultant.user.phone)
+
+    get_consultant.short_description = 'Информация о консультанте'
+
+
+class RatingStartAdmin(admin.ModelAdmin):
+    list_display = ['id', 'value']
+
 admin.site.register(User, UserAdmin)
-admin.site.register(RatingStart)
-admin.site.register(Rating)
+admin.site.register(RatingStart, RatingStartAdmin)
+admin.site.register(Rating, RatingAdmin)
 admin.site.register(Consultant, ConsultantAdmin)
 admin.site.register(Specialty, SpecialtyAdmin)
+admin.site.unregister(Group)

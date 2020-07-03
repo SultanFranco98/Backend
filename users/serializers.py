@@ -1,8 +1,7 @@
-from rest_framework_simplejwt.serializers import TokenObtainPairSerializer, TokenRefreshSerializer
+from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from .models import *
 from agrarie.settings import SIMPLE_JWT
-from datetime import timedelta
 
 
 class CustomTokenSerializer(TokenObtainPairSerializer):
@@ -20,7 +19,7 @@ class UsersListSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'id', 'email', 'first_name', 'last_name', 'photo')
+            'id', 'email', 'first_name', 'last_name', 'photo', 'phone')
 
 
 class UsersDetailSerializer(serializers.ModelSerializer):
@@ -49,8 +48,8 @@ class RatingListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Rating
-        fields = ('user', 'consultant', 'star',)
-        read_only_fields = ('user',)
+        fields = ('id', 'user', 'consultant', 'star',)
+        read_only_fields = ('id', 'user',)
 
     def create(self, validated_data):
         rating, _ = Rating.objects.update_or_create(
@@ -64,7 +63,8 @@ class RatingListSerializer(serializers.ModelSerializer):
 class ReviewsListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reviews
-        fields = ('consultant', 'text')
+        fields = ('id', 'consultant', 'text')
+        read_only_fields = ('consultant',)
 
 
 class ReviewsDetailSerializer(serializers.ModelSerializer):
@@ -92,9 +92,18 @@ class ConsultantListSerializer(serializers.ModelSerializer):
     specialty = CategoryConsultantListSerializer(many=True, read_only=True)
     middle_star = serializers.FloatField()
 
+
     class Meta:
         model = Consultant
         fields = ('id', 'user', 'specialty', 'description', 'middle_star')
+
+
+class ProfileConsultantSerializer(serializers.ModelSerializer):
+    user = UsersListSerializer(many=False)
+
+    class Meta:
+        model = Consultant
+        fields = ('id', 'user', 'description')
 
 
 class ImageConsultantDetailSerializer(serializers.ModelSerializer):
@@ -113,11 +122,10 @@ class ConsultantDetailSerializer(serializers.ModelSerializer):
     user = UsersListSerializer(many=False)
     specialty = CategoryConsultantListSerializer(many=True, read_only=True)
     reviews = ReviewsDetailSerializer(many=True, read_only=True)
-    middle_star = serializers.FloatField()
 
     class Meta:
         model = Consultant
-        fields = ('id', 'user', 'specialty', 'description', 'middle_star', 'reviews')
+        fields = ('id', 'user', 'specialty', 'description', 'reviews')
 
 
 class RegistrationClientSerializer(serializers.ModelSerializer):
