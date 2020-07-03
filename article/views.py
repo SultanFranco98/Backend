@@ -3,6 +3,7 @@ from rest_framework.permissions import IsAdminUser
 from users.permissions import IsClient, IsConsultant
 from .serializers import *
 from .models import *
+from rest_framework.permissions import AllowAny
 from django.core.exceptions import ObjectDoesNotExist
 from rest_framework.exceptions import PermissionDenied, NotFound
 from rest_framework.response import Response
@@ -12,6 +13,7 @@ from rest_framework.generics import get_object_or_404
 
 class VoteViewSet(ModelViewSet):
     # permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    permission_classes = [AllowAny]
     serializer_class = VoteSerializer
 
     def get_queryset(self):
@@ -31,6 +33,7 @@ class VoteViewSet(ModelViewSet):
 
 class ArticleViewSet(ModelViewSet):
     # permission_classes = [IsConsultant | IsAdminUser]
+    permission_classes = [AllowAny]
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
 
