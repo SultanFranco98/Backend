@@ -1,11 +1,11 @@
 from django.db import models
 from django.contrib.auth import settings
-from users.models import Consultant
+from users.models import User
 from forums.models import Category, SubCategory, Types, SubTypes
 
 
 class Article(models.Model):
-    consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, verbose_name='Автор')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
     subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, verbose_name='Подкатегория')
     types = models.ForeignKey(Types, on_delete=models.CASCADE, verbose_name='Вид', blank=True, null=True)

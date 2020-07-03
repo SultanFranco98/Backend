@@ -3,7 +3,7 @@ from .models import *
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ['title', 'votes', 'category', 'subcategory', 'consultant']
+    list_display = ['title', 'votes', 'category', 'subcategory', 'user']
 
 
 class VoteAdmin(admin.ModelAdmin):
