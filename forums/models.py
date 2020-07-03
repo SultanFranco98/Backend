@@ -4,6 +4,8 @@ from django.contrib.auth import settings
 
 class Category(models.Model):
     title = models.CharField(max_length=100, blank=False, null=False, verbose_name='Категория')
+    description = models.TextField(blank=True, null=True, verbose_name='Описание')
+    image = models.ImageField(upload_to='category-image/', blank=True, null=True, verbose_name='Фотография')
 
     class Meta:
         verbose_name = 'Категория'
@@ -53,6 +55,8 @@ class Forum(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категории')
     subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, verbose_name='Подкатегории')
+    types = models.ForeignKey(Types, on_delete=models.CASCADE, verbose_name='Виды', blank=True, null=True)
+    subtypes = models.ForeignKey(SubTypes, on_delete=models.CASCADE, verbose_name='Подвиды', blank=True, null=True)
     title = models.CharField(max_length=100, verbose_name='Заголовок')
     description = models.TextField(max_length=5000, verbose_name='Описание')
     pub_date = models.DateField(auto_now_add=True, verbose_name='Дата публикации')
