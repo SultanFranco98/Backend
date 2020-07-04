@@ -90,9 +90,3 @@ class SubTypesByTypesViewSet(ReadOnlyModelViewSet):
         queryset = SubTypes.objects.filter(type_id=self.kwargs["pk"])
         return queryset
 
-
-class SliderViewSet(ReadOnlyModelViewSet):
-    # permission_classes = [IsClient | IsConsultant | IsAdminUser]
-    permission_classes = [AllowAny]
-    queryset = Slider.objects.all()
-    serializer_class = SliderSerializer

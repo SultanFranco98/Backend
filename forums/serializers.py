@@ -58,8 +58,3 @@ class ForumListSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'category', 'subcategory', 'types', 'subtypes', 'title', 'description', 'pub_date']
         read_only_fields = ['user', 'pub_date']
 
-
-class SliderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Slider
-        fields = '__all__'

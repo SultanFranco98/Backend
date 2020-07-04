@@ -83,5 +83,4 @@ class Comment(models.Model):
         return '{}'.format(self.user)
 
 
-class Slider(models.Model):
-    image = models.ImageField(upload_to='slider-image/', blank=True, null=True, verbose_name='Слайд')
+

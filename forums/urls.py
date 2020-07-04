@@ -23,6 +23,4 @@ urlpatterns = [
     path('category/<int:pk>/subcategories', SubCategoriesByCategoriesViewSet.as_view({'get': 'list'})),
     path('subcategory/<int:pk>/types', TypesBySubCategoriesViewSet.as_view({'get': 'list'})),
     path('type/<int:pk>/subtypes', SubTypesByTypesViewSet.as_view({'get': 'list'})),
-
-    path('slider/', SliderViewSet.as_view({'get': 'list'})),
 ]

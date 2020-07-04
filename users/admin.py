@@ -83,21 +83,14 @@ class RatingAdmin(admin.ModelAdmin):
 class RatingStartAdmin(admin.ModelAdmin):
     list_display = ['id', 'value']
 
-<<<<<<< HEAD
-=======
 
 class ReviewsAdmin(admin.ModelAdmin):
     list_display = ['consultant', 'text', 'name', 'email']
 
-
->>>>>>> origin/second
 admin.site.register(User, UserAdmin)
 admin.site.register(RatingStart, RatingStartAdmin)
 admin.site.register(Rating, RatingAdmin)
 admin.site.register(Consultant, ConsultantAdmin)
 admin.site.register(Specialty, SpecialtyAdmin)
-<<<<<<< HEAD
-=======
 admin.site.register(Reviews, ReviewsAdmin)
->>>>>>> origin/second
 admin.site.unregister(Group)
