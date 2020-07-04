@@ -30,3 +30,7 @@ admin.site.register(SubCategory, SubCategoryAdmin)
 admin.site.register(Types, TypesAdmin)
 admin.site.register(SubTypes, SubTypesAdmin)
 admin.site.register(Forum, ForumAdmin)
+<<<<<<< HEAD
+=======
+admin.site.register(Slider)
+>>>>>>> origin/second

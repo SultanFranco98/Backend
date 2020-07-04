@@ -1,9 +1,10 @@
 from rest_framework import serializers
 from .models import *
+from users.serializers import UsersListSerializer
 
 
 class VoteSerializer(serializers.ModelSerializer):
-    user = serializers.PrimaryKeyRelatedField(read_only=True)
+    user = UsersListSerializer(read_only=True, many=False)
     article = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
@@ -17,8 +18,8 @@ class ArticleSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Article
-        fields = ['id', 'consultant', 'category', 'subcategory', 'title', 'text', 'pub_date', 'votes']
-        read_only_fields = ['consultant', 'pub_date', 'votes']
+        fields = ['id', 'user', 'category', 'subcategory', 'types', 'subtypes', 'title', 'text', 'pub_date', 'votes']
+        read_only_fields = ['user', 'pub_date', 'votes']
 
 
 

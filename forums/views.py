@@ -28,7 +28,8 @@ class TypesViewSet(ModelViewSet):
 
 
 class SubTypesViewSet(ModelViewSet):
-    permission_classes = [IsAdminUser]
+    # permission_classes = [IsAdminUser]
+    permission_classes = [AllowAny]
     queryset = SubTypes.objects.all()
     serializer_class = SubTypesSerializer
 
@@ -61,7 +62,8 @@ class CommentViewSet(ModelViewSet):
 
 
 class SubCategoriesByCategoriesViewSet(ReadOnlyModelViewSet):
-    permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    # permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    permission_classes = [AllowAny]
     serializer_class = SubCategorySerializer
 
     def get_queryset(self):
@@ -70,7 +72,8 @@ class SubCategoriesByCategoriesViewSet(ReadOnlyModelViewSet):
 
 
 class TypesBySubCategoriesViewSet(ReadOnlyModelViewSet):
-    permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    # permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    permission_classes = [AllowAny]
     serializer_class = TypesSerializer
 
     def get_queryset(self):
@@ -79,9 +82,17 @@ class TypesBySubCategoriesViewSet(ReadOnlyModelViewSet):
 
 
 class SubTypesByTypesViewSet(ReadOnlyModelViewSet):
-    permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    # permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    permission_classes = [AllowAny]
     serializer_class = SubTypesSerializer
 
     def get_queryset(self):
         queryset = SubTypes.objects.filter(type_id=self.kwargs["pk"])
         return queryset
+
+
+class SliderViewSet(ReadOnlyModelViewSet):
+    # permission_classes = [IsClient | IsConsultant | IsAdminUser]
+    permission_classes = [AllowAny]
+    queryset = Slider.objects.all()
+    serializer_class = SliderSerializer
