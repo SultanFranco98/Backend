@@ -85,7 +85,18 @@ class RatingStartAdmin(admin.ModelAdmin):
 
 
 class ReviewsAdmin(admin.ModelAdmin):
-    list_display = ['consultant', 'text', 'name', 'email']
+    list_display = ['consultant', 'text', 'name', 'email', ]
+    fields = ['consultant', 'get_consultant', 'name', 'email', 'text', ]
+    readonly_fields = ['get_consultant']
+
+    def get_consultant(self, obj):
+        return 'Имя:\t{}\n\n' \
+               'Фамилия:\t{}\n\n' \
+               'Телефон:\t{}\n\n'.format(obj.consultant.user.first_name, obj.consultant.user.last_name,
+                                         obj.consultant.user.phone)
+
+    get_consultant.short_description = 'Информация о консультанте'
+
 
 admin.site.register(User, UserAdmin)
 admin.site.register(RatingStart, RatingStartAdmin)
