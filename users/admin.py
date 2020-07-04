@@ -3,6 +3,9 @@ from django.contrib.auth.admin import UserAdmin
 from django.contrib.auth.models import Group
 from .models import *
 
+admin.site.site_header = "Агро Консультирование"
+admin.site.site_title = "Агро Консультирование"
+admin.site.index_title = "Агро Консультирование"
 
 class SpecialtyAdmin(admin.ModelAdmin):
     list_display = ('title',)
