@@ -29,7 +29,6 @@ class SubTypesSerializer(serializers.ModelSerializer):
 
 class CommentSerializer(serializers.ModelSerializer):
     user = UsersListSerializer(read_only=True, many=False)
-    forum = serializers.PrimaryKeyRelatedField(read_only=True)
 
     class Meta:
         model = Comment
