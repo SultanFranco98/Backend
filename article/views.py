@@ -1,3 +1,4 @@
+from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser
 from users.permissions import IsClient, IsConsultant
@@ -9,6 +10,7 @@ from rest_framework.exceptions import PermissionDenied, NotFound
 from rest_framework.response import Response
 from rest_framework import status
 from rest_framework.generics import get_object_or_404
+
 
 
 class VoteViewSet(ModelViewSet):
@@ -36,6 +38,7 @@ class ArticleViewSet(ModelViewSet):
     permission_classes = [AllowAny]
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
+    pagination_class = PageNumberPagination
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)

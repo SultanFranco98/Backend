@@ -5,9 +5,9 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.permissions import AllowAny, IsAdminUser
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import *
-from django.db.models import Avg, FloatField
 from rest_framework.exceptions import PermissionDenied
 from .permissions import IsClient, IsConsultant
+from rest_framework.pagination import PageNumberPagination
 
 
 class CustomTokenView(TokenObtainPairView):
@@ -41,6 +41,7 @@ class ConsultantViewSet(ReadOnlyModelViewSet):
     # permission_classes = [IsClient | IsConsultant | IsAdminUser]
     permission_classes = [AllowAny]
     serializer_class = ConsultantListSerializer
+    pagination_class = PageNumberPagination
 
     def get_queryset(self):
         pk = self.kwargs['pk']

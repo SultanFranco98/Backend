@@ -2,6 +2,7 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.permissions import IsAdminUser
 from users.permissions import IsClient, IsConsultant
 from rest_framework.permissions import AllowAny
+from rest_framework.pagination import PageNumberPagination
 from .serializers import *
 from .models import *
 
@@ -38,6 +39,13 @@ class ForumViewSet(ModelViewSet):
     # permission_classes = [IsClient | IsAdminUser]
     permission_classes = [AllowAny]
     queryset = Forum.objects.all()
+    pagination_class = PageNumberPagination
+
+    def get_queryset(self):
+        if self.action == 'list':
+            return Forum.objects.annotate(
+                comment_count=models.Count('comments')
+            )
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -89,4 +97,3 @@ class SubTypesByTypesViewSet(ReadOnlyModelViewSet):
     def get_queryset(self):
         queryset = SubTypes.objects.filter(type_id=self.kwargs["pk"])
         return queryset
-

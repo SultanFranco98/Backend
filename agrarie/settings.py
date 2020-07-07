@@ -9,7 +9,7 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG')
 
-ALLOWED_HOSTS = ['134.122.76.224']
+ALLOWED_HOSTS = ['134.122.76.224', '127.0.0.1']
 # ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
@@ -135,7 +135,9 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
-    )
+    ),
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'PAGE_SIZE': 9,
 }
 
 SIMPLE_JWT = {
