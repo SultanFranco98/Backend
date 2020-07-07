@@ -21,21 +21,18 @@ class VoteViewSet(ModelViewSet):
         return queryset
 
     def perform_create(self, serializer):
-        if self.request.user.is_authenticated:
-            try:
-                article = Article.objects.get(id=self.kwargs['pk'])
-                return serializer.save(user=self.request.user, article=article)
-            except ObjectDoesNotExist:
-                raise NotFound('Статья не найдена.')
-        else:
-            raise PermissionDenied('Авторизуйтесь для добавления оценки.')
+        article = Article.objects.get(id=self.kwargs['pk'], status=True)
+        return serializer.save(user=self.request.user, article=article)
 
 
 class ArticleViewSet(ModelViewSet):
     # permission_classes = [IsConsultant | IsAdminUser]
     permission_classes = [AllowAny]
     serializer_class = ArticleSerializer
-    queryset = Article.objects.all()
+
+    def get_queryset(self):
+        queryset = Article.objects.filter(status=True)
+        return queryset
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
