@@ -91,7 +91,7 @@ class ReviewsViewSet(ModelViewSet):
             return ReviewsDetailSerializer
 
 
-class UserViewSet(ReadOnlyModelViewSet):
+class UserViewSet(ModelViewSet):
     # permission_classes = [IsClient | IsConsultant | IsAdminUser]
     permission_classes = [AllowAny]
 
