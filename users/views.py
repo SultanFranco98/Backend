@@ -2,12 +2,11 @@ from rest_framework import status
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
-from rest_framework.permissions import AllowAny, IsAdminUser
+from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import *
 from rest_framework.exceptions import PermissionDenied
-from .permissions import IsClient, IsConsultant
-from rest_framework.pagination import PageNumberPagination
+from agrarie.pagintions import CustomResultsSetPagination
 
 
 class CustomTokenView(TokenObtainPairView):
@@ -47,7 +46,7 @@ class ConsultantViewSet(ReadOnlyModelViewSet):
     # permission_classes = [IsClient | IsConsultant | IsAdminUser]
     permission_classes = [AllowAny]
     serializer_class = ConsultantListSerializer
-    pagination_class = PageNumberPagination
+    pagination_class = CustomResultsSetPagination
 
     def get_queryset(self):
         pk = self.kwargs['pk']

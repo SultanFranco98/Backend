@@ -2,7 +2,7 @@ from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.permissions import IsAdminUser
 from users.permissions import IsClient, IsConsultant
 from rest_framework.permissions import AllowAny
-from rest_framework.pagination import PageNumberPagination
+from agrarie.pagintions import CustomResultsSetPagination
 from .serializers import *
 from .models import *
 
@@ -39,7 +39,7 @@ class ForumViewSet(ModelViewSet):
     # permission_classes = [IsClient | IsAdminUser]
     permission_classes = [AllowAny]
     queryset = Forum.objects.all()
-    pagination_class = PageNumberPagination
+    pagination_class = CustomResultsSetPagination
 
     def get_queryset(self):
         if self.action == 'list':
