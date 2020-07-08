@@ -7,7 +7,7 @@ admin.site.index_title = "Агро Консультирование"
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    list_display = ['title', 'votes', 'category', 'subcategory', 'user']
+    list_display = ['title', 'status', 'category', 'subcategory', 'user', 'votes']
 
 
 class VoteAdmin(admin.ModelAdmin):

@@ -6,3 +6,4 @@ admin.site.site_title = "Агро Консультирование"
 admin.site.index_title = "Агро Консультирование"
 
 admin.site.register(Slider)
+admin.site.register(ContactInfo)

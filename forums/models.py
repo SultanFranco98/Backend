@@ -6,6 +6,7 @@ class Category(models.Model):
     title = models.CharField(max_length=100, blank=False, null=False, verbose_name='Категория')
     description = models.TextField(blank=True, null=True, verbose_name='Описание')
     image = models.ImageField(upload_to='category-image/', blank=True, null=True, verbose_name='Фотография')
+    icon_image = models.ImageField(upload_to='category-icon/', blank=True, null=True, verbose_name='Иконка')
 
     class Meta:
         verbose_name = 'Категория'

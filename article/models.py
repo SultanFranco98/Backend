@@ -13,6 +13,7 @@ class Article(models.Model):
     title = models.CharField(max_length=100, verbose_name='Заголовок')
     text = models.TextField(verbose_name='Текст')
     pub_date = models.DateField(auto_now_add=True, verbose_name='Дата публикации')
+    status = models.BooleanField(default=False, verbose_name='Статус')
     votes = models.IntegerField(blank=True, null=True, verbose_name='Оценка')
 
     class Meta:
@@ -23,7 +24,7 @@ class Article(models.Model):
         return self.title
 
     def total_votes(self):
-        votes = Vote.objects.filter(article=self.pk, vote=True).count()
+        votes = Vote.objects.filter(article=self.pk, vote=True, article__status=True).count()
         self.votes = votes
         self.save()
         return self.votes

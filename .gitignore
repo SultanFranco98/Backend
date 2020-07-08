@@ -142,4 +142,8 @@ cython_debug/
 
 .gitignore
 .idea/
+/media
+/static
 media/
+static/
+
