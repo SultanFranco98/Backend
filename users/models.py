@@ -53,6 +53,7 @@ class User(AbstractBaseUser, PermissionsMixin):
 
 class Consultant(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
+    title = models.CharField(max_length=200, blank=True, null=True, verbose_name='Заголовок')
     description = models.TextField(blank=True, null=True, verbose_name='Описание')
     comment = models.TextField(max_length=200, blank=True, null=True, verbose_name='Комментарии')
 
