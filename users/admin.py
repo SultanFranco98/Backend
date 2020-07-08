@@ -29,7 +29,7 @@ class ImageConsultantInline(admin.TabularInline):
 class ConsultantAdmin(admin.ModelAdmin):
     inlines = (CategoryConsultantInline, ImageConsultantInline)
     list_display = ('user', 'get_consultant', 'short_description')
-    fields = ('user', 'get_consultant', 'description', 'comment')
+    fields = ('user', 'get_consultant', 'title', 'description', 'comment')
     readonly_fields = ('get_consultant',)
 
     def get_consultant(self, obj):

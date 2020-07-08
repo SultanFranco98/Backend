@@ -95,7 +95,7 @@ class ConsultantListSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Consultant
-        fields = ('id', 'user', 'specialty', 'description', 'middle_star')
+        fields = ('id', 'user', 'specialty', 'title', 'description', 'middle_star')
 
 
 class ProfileConsultantSerializer(serializers.ModelSerializer):
@@ -103,7 +103,7 @@ class ProfileConsultantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Consultant
-        fields = ('id', 'user', 'description')
+        fields = ('id', 'user', 'title', 'description')
 
 
 class ImageConsultantDetailSerializer(serializers.ModelSerializer):
@@ -125,7 +125,7 @@ class ConsultantDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Consultant
-        fields = ('id', 'user', 'specialty', 'description', 'reviews')
+        fields = ('id', 'user', 'specialty', 'title', 'description', 'reviews')
 
 
 class RegistrationClientSerializer(serializers.ModelSerializer):
