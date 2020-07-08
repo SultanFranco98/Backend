@@ -37,6 +37,12 @@ class RatingViewSet(ModelViewSet):
         serializer.save(user=self.request.user)
 
 
+class CertificateViewSet(ModelViewSet):
+    permission_classes = [AllowAny]
+    queryset = ImageConsultant.objects.all()
+    serializer_class = ImageConsultantDetailSerializer
+
+
 class ConsultantViewSet(ReadOnlyModelViewSet):
     # permission_classes = [IsClient | IsConsultant | IsAdminUser]
     permission_classes = [AllowAny]

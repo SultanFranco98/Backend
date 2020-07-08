@@ -10,7 +10,6 @@ SECRET_KEY = config('SECRET_KEY')
 DEBUG = config('DEBUG')
 
 ALLOWED_HOSTS = ['134.122.76.224', '127.0.0.1']
-# ALLOWED_HOSTS = []
 
 INSTALLED_APPS = [
     'jet.dashboard',
