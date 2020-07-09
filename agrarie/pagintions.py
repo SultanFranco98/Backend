@@ -12,5 +12,6 @@ class CustomResultsSetPagination(PageNumberPagination):
             'previous': self.get_previous_link(),
             'count': self.page.paginator.count,
             'limit': self.page_size,
+            'current': self.page.number,
             'results': data
         })
