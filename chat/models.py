@@ -39,7 +39,8 @@ class ThreadManager(models.Manager):
 class Thread(models.Model):
     first = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='chat_thread_first',
                               verbose_name='Первый')
-    second = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='chat_thread_second', verbose_name='Второй')
+    second = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, related_name='chat_thread_second',
+                               verbose_name='Второй')
     updated = models.DateTimeField(auto_now=True, verbose_name='Дата')
     timestamp = models.DateTimeField(auto_now_add=True)
 
@@ -64,7 +65,7 @@ class Thread(models.Model):
 
 
 class ChatMessage(models.Model):
-    thread = models.ForeignKey(Thread, null=True, blank=True, on_delete=models.SET_NULL)
+    thread = models.ForeignKey(Thread, null=True, blank=True, on_delete=models.SET_NULL, related_name='messages')
     user = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='Отправитель', on_delete=models.CASCADE)
     message = models.TextField(verbose_name='Сообщение')
     timestamp = models.DateTimeField(auto_now_add=True, verbose_name='Дата')

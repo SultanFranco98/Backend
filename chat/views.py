@@ -1,9 +1,7 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.http import Http404, HttpResponseForbidden
+from django.http import Http404
 from rest_framework.viewsets import ReadOnlyModelViewSet, ModelViewSet
 from rest_framework.permissions import IsAuthenticated
-from django.views.generic.edit import FormMixin
-from django.views.generic import DetailView, ListView
+from agrarie.pagintions import CustomResultsSetPagination
 from .serializers import *
 from .models import Thread, ChatMessage
 
@@ -11,6 +9,7 @@ from .models import Thread, ChatMessage
 class InboxViewSet(ReadOnlyModelViewSet):
     serializer_class = ThreadListSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = CustomResultsSetPagination
 
     def get_queryset(self):
         return Thread.objects.by_user(self.request.user)
@@ -19,6 +18,7 @@ class InboxViewSet(ReadOnlyModelViewSet):
 class ThreadViewSet(ModelViewSet):
     serializer_class = ThreadDetailSerializer
     permission_classes = [IsAuthenticated]
+    pagination_class = CustomResultsSetPagination
     success_url = './'
 
     def get_queryset(self):
