@@ -14,6 +14,11 @@ class SpecialtyAdmin(admin.ModelAdmin):
 class CategoryConsultantInline(admin.TabularInline):
     model = CategoryConsultant
 
+    def get_extra(self, request, obj=None, **kwargs):
+        if obj is None:
+            return self.extra
+        return 0
+
 
 class ImageConsultantAdmin(admin.ModelAdmin):
     fields = ('certificate_tag',)
@@ -25,6 +30,10 @@ class ImageConsultantInline(admin.TabularInline):
     fields = ('certificate_tag', 'certificate_image')
     readonly_fields = ('certificate_tag',)
 
+    def get_extra(self, request, obj=None, **kwargs):
+        if obj is None:
+            return self.extra
+        return 0
 
 class ConsultantAdmin(admin.ModelAdmin):
     inlines = (CategoryConsultantInline, ImageConsultantInline)

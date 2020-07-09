@@ -10,6 +10,11 @@ class CommentInline(admin.TabularInline):
     fields = ['user', 'description', 'pub_date']
     readonly_fields = ['pub_date']
 
+    def get_extra(self, request, obj=None, **kwargs):
+        if obj is None:
+            return self.extra
+        return 0
+
 
 class ForumAdmin(admin.ModelAdmin):
     inlines = [CommentInline]

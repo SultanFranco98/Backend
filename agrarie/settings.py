@@ -25,7 +25,9 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'forums.apps.ForumsConfig',
     'article.apps.ArticleConfig',
+    'chat.apps.ChatConfig',
     'informations.apps.InformationsConfig',
+    'channels',
     'corsheaders',
     'drf_yasg',
 ]
@@ -42,6 +44,7 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'agrarie.urls'
+ASGI_APPLICATION = "agrarie.routing.application"
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
@@ -80,7 +83,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'agrarie.wsgi.application'
+# WSGI_APPLICATION = 'agrarie.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -129,9 +132,9 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 JET_SIDE_MENU_COMPACT = True
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'rest_framework_simplejwt.authentication.JWTAuthentication',
+    # ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
@@ -163,4 +166,13 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_EXP_CLAIM': 'refresh_exp',
     'SLIDING_TOKEN_LIFETIME': timedelta(minutes=5),
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
+}
+
+CHANNEL_LAYERS = {
+    "default": {
+        "BACKEND": "channels_redis.core.RedisChannelLayer",
+        "CONFIG": {
+            "hosts": [("127.0.0.1", 6379)],
+        },
+    },
 }
