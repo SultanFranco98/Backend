@@ -25,7 +25,6 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'forums.apps.ForumsConfig',
     'article.apps.ArticleConfig',
-    'chat.apps.ChatConfig',
     'informations.apps.InformationsConfig',
     'channels',
     'corsheaders',
