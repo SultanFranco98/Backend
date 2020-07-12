@@ -55,11 +55,10 @@ class SubTypes(models.Model):
 class Forum(models.Model):
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name='Пользователь')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категории')
-    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, verbose_name='Подкатегории')
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, verbose_name='Подкатегории', blank=True, null=True)
     types = models.ForeignKey(Types, on_delete=models.CASCADE, verbose_name='Виды', blank=True, null=True)
     subtypes = models.ForeignKey(SubTypes, on_delete=models.CASCADE, verbose_name='Подвиды', blank=True, null=True)
-    title = models.CharField(max_length=100, verbose_name='Заголовок')
-    description = models.TextField(max_length=5000, verbose_name='Описание')
+    title = models.TextField(max_length=5000, verbose_name='Вопрос')
     pub_date = models.DateField(auto_now_add=True, verbose_name='Дата публикации')
 
     class Meta:

@@ -60,19 +60,6 @@ class RatingListSerializer(serializers.ModelSerializer):
         return rating
 
 
-class ReviewsListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Reviews
-        fields = ('id', 'consultant', 'text')
-        read_only_fields = ('consultant',)
-
-
-class ReviewsDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Reviews
-        fields = ("id", "name", 'email', "text")
-
-
 class CategoryConsultantListSerializer(serializers.ModelSerializer):
     class Meta:
         model = CategoryConsultant
@@ -92,7 +79,6 @@ class ConsultantListSerializer(serializers.ModelSerializer):
     specialty = CategoryConsultantListSerializer(many=True, read_only=True)
     middle_star = serializers.FloatField()
 
-
     class Meta:
         model = Consultant
         fields = ('id', 'user', 'specialty', 'title', 'description', 'middle_star')
@@ -104,6 +90,18 @@ class ProfileConsultantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Consultant
         fields = ('id', 'user', 'title', 'description')
+
+
+class ReviewsListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reviews
+        fields = ('id', 'consultant', 'text')
+
+
+class ReviewsDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reviews
+        fields = ("id", 'consultant', "name", 'email', "text")
 
 
 class ImageConsultantDetailSerializer(serializers.ModelSerializer):
