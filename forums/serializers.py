@@ -53,7 +53,7 @@ class ForumCreateSerializer(serializers.ModelSerializer):
 
 
 class ForumListSerializer(serializers.ModelSerializer):
-    user = UsersListSerializer(many=False)
+    user = UsersListSerializer(many=False, read_only=True)
     comment_count = serializers.IntegerField()
 
     class Meta:
