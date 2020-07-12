@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import status
+from rest_framework import status, filters
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.permissions import IsAdminUser
@@ -48,6 +48,8 @@ class ForumViewSet(ModelViewSet):
     queryset = Forum.objects.all()
     pagination_class = CustomResultsSetPagination
     serializer_class = ForumListSerializer
+    filter_backends = [filters.SearchFilter]
+    search_fields = ['title']
 
     def get_queryset(self):
         if self.action == 'list':
