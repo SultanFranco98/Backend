@@ -13,7 +13,7 @@ urlpatterns = [
                   path('api/', include('forums.urls')),
                   path('api/', include('article.urls')),
                   path('api/', include('informations.urls')),
-                  path('api/message/', include('chat.urls')),
+                  # path('api/message/', include('chat.urls')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += doc_urls
