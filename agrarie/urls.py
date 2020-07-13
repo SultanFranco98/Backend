@@ -8,10 +8,11 @@ urlpatterns = [
                   path('jet/', include('jet.urls', 'jet')),
                   path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
                   path('admin/', admin.site.urls),
-                  path('api-auth/', include('rest_framework.urls')),
+                  # path('api-auth/', include('rest_framework.urls')),
                   path('api/', include('users.urls')),
                   path('api/', include('forums.urls')),
                   path('api/', include('article.urls')),
+                  path('api/auth/', include('djoser.urls')),
                   path('api/', include('informations.urls')),
                   # path('api/message/', include('chat.urls')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
