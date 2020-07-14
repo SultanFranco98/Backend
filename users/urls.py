@@ -12,7 +12,7 @@ urlpatterns = [
     path('signup/consultant', RegistrationConsultantViewSet.as_view({'post': 'create'})),
 
     path('profile/', UserViewSet.as_view({'get': 'list'})),
-    path('profile/edit/<str:name>/', UserViewSet.as_view({'put': 'update'})),
+    path('profile/edit/<str:name>/', UserViewSet.as_view({'get': 'retrieve','put': 'update'})),
 
     path('consultants/certificate/create', CertificateViewSet.as_view({'post': 'create'})),
     path('consultants/<int:pk>/', ConsultantViewSet.as_view({'get': 'retrieve'})),
@@ -24,12 +24,12 @@ urlpatterns = [
 
     path('ratings/', RatingViewSet.as_view({'get': 'list'})),
     path('ratings/<int:pk>/', RatingViewSet.as_view({'get': 'retrieve'})),
-    path('ratings/delete/<int:pk>/', RatingViewSet.as_view({'delete': 'destroy'})),
+    path('ratings/delete/<int:pk>/', RatingViewSet.as_view({'get': 'retrieve', 'delete': 'destroy'})),
     path('ratings/create', RatingViewSet.as_view({'post': 'create'})),
 
     path('reviews/', ReviewsViewSet.as_view({'get': 'list'})),
     path('reviews/<int:pk>/', ReviewsViewSet.as_view({'get': 'retrieve'})),
-    path('reviews/edit/<int:pk>/', ReviewsViewSet.as_view({'put': 'update'})),
-    path('reviews/delete/<int:pk>/', ReviewsViewSet.as_view({'delete': 'destroy'})),
+    path('reviews/edit/<int:pk>/', ReviewsViewSet.as_view({'get': 'retrieve', 'put': 'update'})),
+    path('reviews/delete/<int:pk>/', ReviewsViewSet.as_view({'get': 'retrieve', 'delete': 'destroy'})),
     path('reviews/create/', ReviewsViewSet.as_view({'post': 'create'})),
 ]
