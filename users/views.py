@@ -106,6 +106,15 @@ class UserViewSet(ModelViewSet):
         except:
             raise PermissionDenied
 
+    def get_object(self):
+        name = self.kwargs['name']
+        pk = self.request.user.pk
+        if self.request.user.is_consultant:
+            obj = get_object_or_404(Consultant, user__first_name=name, user__id=pk)
+        elif self.request.user.is_client:
+            obj = get_object_or_404(User, first_name=name, id=pk)
+        return obj
+
     def get_serializer_class(self):
         try:
             if self.request.user.is_consultant:

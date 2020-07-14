@@ -20,14 +20,16 @@ class CustomTokenSerializer(TokenObtainPairSerializer):
 
 
 class UsersListSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = User
         fields = (
             'id', 'email', 'first_name', 'last_name', 'photo', 'phone')
 
 
+
 class UsersDetailSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(max_length=128, min_length=8, write_only=True, style={'input_type': 'password'})
+    password = serializers.CharField(max_length=128, min_length=8, write_only=True, style={'input_type': 'password'}, label='Пароль')
 
     class Meta:
         model = User
@@ -135,13 +137,15 @@ class RegistrationClientSerializer(serializers.ModelSerializer):
         max_length=128,
         min_length=8,
         write_only=True,
-        style={'input_type': 'password'}
+        style={'input_type': 'password'},
+        label='Пароль'
     )
     password1 = serializers.CharField(
         max_length=128,
         min_length=8,
         write_only=True,
         style={'input_type': 'password'},
+        label='Потверждение пароля'
     )
 
     class Meta:
@@ -171,6 +175,7 @@ class RegistrationConsultantSerializer(serializers.ModelSerializer):
         min_length=8,
         write_only=True,
         style={'input_type': 'password'},
+        label='Потверждение пароля'
     )
 
     class Meta:

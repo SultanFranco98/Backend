@@ -12,7 +12,7 @@ urlpatterns = [
     path('signup/consultant', RegistrationConsultantViewSet.as_view({'post': 'create'})),
 
     path('profile/', UserViewSet.as_view({'get': 'list'})),
-    path('profile/edit/', UserViewSet.as_view({'put': 'update'})),
+    path('profile/edit/<str:name>/', UserViewSet.as_view({'put': 'update'})),
 
     path('consultants/certificate/create', CertificateViewSet.as_view({'post': 'create'})),
     path('consultants/<int:pk>/', ConsultantViewSet.as_view({'get': 'retrieve'})),

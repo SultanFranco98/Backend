@@ -1,4 +1,3 @@
-from rest_framework.pagination import PageNumberPagination
 from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser
 from users.permissions import IsClient, IsConsultant
@@ -6,6 +5,8 @@ from .serializers import *
 from .models import *
 from rest_framework.permissions import AllowAny
 from agrarie.pagintions import CustomResultsSetPagination
+from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework import status, filters
 
 
 class VoteViewSet(ModelViewSet):
@@ -29,6 +30,9 @@ class ArticleViewSet(ModelViewSet):
     serializer_class = ArticleSerializer
     queryset = Article.objects.all()
     pagination_class = CustomResultsSetPagination
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    filterset_fields = ['category', 'subcategory', 'types', 'subtypes']
+    search_fields = ['title']
 
     def get_queryset(self):
         queryset = Article.objects.filter(status=True)

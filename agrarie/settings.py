@@ -26,6 +26,7 @@ INSTALLED_APPS = [
     'forums.apps.ForumsConfig',
     'article.apps.ArticleConfig',
     'informations.apps.InformationsConfig',
+    'django_filters',
     'corsheaders',
     'djoser',
     'drf_yasg',
@@ -130,14 +131,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 JET_SIDE_MENU_COMPACT = True
 
 REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
+    # 'DEFAULT_AUTHENTICATION_CLASSES': (
+    #     'rest_framework_simplejwt.authentication.JWTAuthentication',
+    # ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 9,
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 SIMPLE_JWT = {

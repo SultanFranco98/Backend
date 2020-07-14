@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404
 from rest_framework import status, filters
+from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.permissions import IsAdminUser
@@ -48,7 +49,8 @@ class ForumViewSet(ModelViewSet):
     queryset = Forum.objects.all()
     pagination_class = CustomResultsSetPagination
     serializer_class = ForumListSerializer
-    filter_backends = [filters.SearchFilter]
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    filterset_fields = ['category', 'subcategory', 'types', 'subtypes']
     search_fields = ['title']
 
     def get_queryset(self):
@@ -101,36 +103,3 @@ class CommentViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
-
-
-class SubCategoriesByCategoriesViewSet(ReadOnlyModelViewSet):
-    # permission_classes = [IsClient | IsConsultant | IsAdminUser]
-    permission_classes = [AllowAny]
-    serializer_class = SubCategorySerializer
-    pagination_class = CustomResultsSetPagination
-
-    def get_queryset(self):
-        queryset = SubCategory.objects.filter(category_id=self.kwargs["pk"])
-        return queryset
-
-
-class TypesBySubCategoriesViewSet(ReadOnlyModelViewSet):
-    # permission_classes = [IsClient | IsConsultant | IsAdminUser]
-    permission_classes = [AllowAny]
-    serializer_class = TypesSerializer
-    pagination_class = CustomResultsSetPagination
-
-    def get_queryset(self):
-        queryset = Types.objects.filter(subcategory_id=self.kwargs["pk"])
-        return queryset
-
-
-class SubTypesByTypesViewSet(ReadOnlyModelViewSet):
-    # permission_classes = [IsClient | IsConsultant | IsAdminUser]
-    permission_classes = [AllowAny]
-    serializer_class = SubTypesSerializer
-    pagination_class = CustomResultsSetPagination
-
-    def get_queryset(self):
-        queryset = SubTypes.objects.filter(type_id=self.kwargs["pk"])
-        return queryset
