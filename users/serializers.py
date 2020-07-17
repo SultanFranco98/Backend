@@ -190,7 +190,7 @@ class RegistrationConsultantSerializer(serializers.ModelSerializer):
         password = user_data['password']
         if password1 and password and password != password1:
             raise serializers.ValidationError('Пароль не совпадает')
-        user = User.objects.create_user(**user_data)
+        user = User.objects.create(**user_data)
         consultant = Consultant.objects.create(user=user, **validated_data)
         for category_data in categories_data:
             CategoryConsultant.objects.create(consultant=consultant, **category_data)

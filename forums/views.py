@@ -11,7 +11,7 @@ from .serializers import *
 from .models import *
 
 
-class CategoryViewSet(ModelViewSet):
+class CategoryViewSet(ReadOnlyModelViewSet):
     # permission_classes = [IsAdminUser]
     permission_classes = [AllowAny]
     queryset = Category.objects.all()
@@ -19,7 +19,7 @@ class CategoryViewSet(ModelViewSet):
     pagination_class = CustomResultsSetPagination
 
 
-class SubCategoryViewSet(ModelViewSet):
+class SubCategoryViewSet(ReadOnlyModelViewSet):
     # permission_classes = [IsAdminUser]
     permission_classes = [AllowAny]
     queryset = SubCategory.objects.all()
@@ -27,7 +27,7 @@ class SubCategoryViewSet(ModelViewSet):
     pagination_class = CustomResultsSetPagination
 
 
-class TypesViewSet(ModelViewSet):
+class TypesViewSet(ReadOnlyModelViewSet):
     # permission_classes = [IsAdminUser]
     permission_classes = [AllowAny]
     queryset = Types.objects.all()
@@ -35,7 +35,7 @@ class TypesViewSet(ModelViewSet):
     pagination_class = CustomResultsSetPagination
 
 
-class SubTypesViewSet(ModelViewSet):
+class SubTypesViewSet(ReadOnlyModelViewSet):
     # permission_classes = [IsAdminUser]
     permission_classes = [AllowAny]
     queryset = SubTypes.objects.all()

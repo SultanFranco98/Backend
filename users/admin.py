@@ -51,7 +51,7 @@ class ConsultantAdmin(admin.ModelAdmin):
 
 class UserAdmin(UserAdmin):
     model = User
-    list_display = ('email', 'first_name', 'last_name', 'phone', 'is_active', 'is_client', 'is_consultant')
+    list_display = ('email', 'first_name', 'last_name', 'phone', 'is_active', 'is_client', 'is_consultant', 'is_superuser')
     fieldsets = (
         (None, {'fields': (
             'email', 'first_name', 'last_name', 'phone', 'is_active', 'is_client', 'is_consultant',

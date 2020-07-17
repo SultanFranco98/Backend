@@ -4,9 +4,12 @@ from .views import *
 urlpatterns = [
     path('categories/', CategoryViewSet.as_view({'get': 'list'})),
     path('categories/<int:pk>/', CategoryViewSet.as_view({'get': 'retrieve'})),
-    path('categories/edit/<int:pk>/', CategoryViewSet.as_view({'get': 'retrieve', 'put': 'update'})),
-    path('categories/delete/<int:pk>/', CategoryViewSet.as_view({'get': 'retrieve', 'delete': 'destroy'})),
-    path('categories/create', CategoryViewSet.as_view({'post': 'create'})),
+    path('subcategories/', SubCategoryViewSet.as_view({'get': 'list'})),
+    path('subcategories/<int:pk>/', SubCategoryViewSet.as_view({'get': 'retrieve'})),
+    path('types/', TypesViewSet.as_view({'get': 'list'})),
+    path('types/<int:pk>/', TypesViewSet.as_view({'get': 'retrieve'})),
+    path('subtypes/', SubTypesViewSet.as_view({'get': 'list'})),
+    path('subtypes/<int:pk>/', SubTypesViewSet.as_view({'get': 'retrieve'})),
 
     path('forums/', ForumViewSet.as_view({'get': 'list'})),
     path('forums/<int:pk>', ForumViewSet.as_view({'get': 'retrieve'})),
