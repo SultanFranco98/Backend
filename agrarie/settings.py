@@ -12,6 +12,7 @@ DEBUG = config('DEBUG')
 ALLOWED_HOSTS = ['134.122.76.224', '127.0.0.1']
 
 INSTALLED_APPS = [
+    'modeltranslation',
     'jet.dashboard',
     'jet',
     'django.contrib.admin',

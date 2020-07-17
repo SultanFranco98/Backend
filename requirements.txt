@@ -17,6 +17,7 @@ daphne==2.5.0
 Django==2.2.7
 django-cors-headers==3.4.0
 django-jet==1.0.8
+django-modeltranslation==0.15
 django-templated-mail==1.1.1
 djangorestframework==3.11.0
 djangorestframework-jwt==1.11.0
