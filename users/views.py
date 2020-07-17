@@ -2,6 +2,7 @@ from rest_framework import status
 from rest_framework.generics import get_object_or_404
 from rest_framework.response import Response
 from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.generics import RetrieveUpdateAPIView
 from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import *
@@ -31,6 +32,7 @@ class RatingViewSet(ModelViewSet):
     # permission_classes = [IsClient | IsAdminUser]
     permission_classes = [AllowAny]
     serializer_class = RatingListSerializer
+    pagination_class = CustomResultsSetPagination
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
@@ -40,6 +42,7 @@ class CertificateViewSet(ModelViewSet):
     permission_classes = [AllowAny]
     queryset = ImageConsultant.objects.all()
     serializer_class = ImageConsultantDetailSerializer
+    pagination_class = CustomResultsSetPagination
 
 
 class ConsultantViewSet(ReadOnlyModelViewSet):
@@ -49,8 +52,7 @@ class ConsultantViewSet(ReadOnlyModelViewSet):
     pagination_class = CustomResultsSetPagination
 
     def get_queryset(self):
-        pk = self.kwargs['pk']
-        specialty = CategoryConsultant.objects.filter(category=pk)
+        specialty = CategoryConsultant.objects.filter(category=self.kwargs['pk'])
         consultant = []
         count = 0
         for spec in specialty:
@@ -61,8 +63,8 @@ class ConsultantViewSet(ReadOnlyModelViewSet):
             count += 1
         return consultant
 
-    def retrieve(self, request, pk, *args, **kwargs):
-        queryset = get_object_or_404(Consultant, id=pk)
+    def retrieve(self, request, *args, **kwargs):
+        queryset = get_object_or_404(Consultant, id=kwargs['pk'])
         serializer = ConsultantDetailSerializer(queryset)
         return Response(serializer.data, status=status.HTTP_200_OK)
 
@@ -72,12 +74,14 @@ class SpecialtyViewSet(ModelViewSet):
     permission_classes = [AllowAny]
     queryset = Specialty.objects.all()
     serializer_class = SpecialtySerializer
+    pagination_class = CustomResultsSetPagination
 
 
 class ReviewsViewSet(ModelViewSet):
     # permission_classes = [IsClient | IsAdminUser]
     permission_classes = [AllowAny]
     queryset = Reviews.objects.all()
+    pagination_class = CustomResultsSetPagination
 
     def perform_create(self, serializer):
         user = User.objects.get(id=self.request.user.pk)
@@ -102,6 +106,15 @@ class UserViewSet(ModelViewSet):
                 return User.objects.filter(id=self.request.user.pk)
         except:
             raise PermissionDenied
+
+    def get_object(self):
+        name = self.kwargs['name']
+        pk = self.request.user.pk
+        if self.request.user.is_consultant:
+            obj = get_object_or_404(Consultant, user__first_name=name, user__id=pk)
+        elif self.request.user.is_client:
+            obj = get_object_or_404(User, first_name=name, id=pk)
+        return obj
 
     def get_serializer_class(self):
         try:

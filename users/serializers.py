@@ -2,6 +2,10 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from .models import *
 from agrarie.settings import SIMPLE_JWT
+from django.contrib.auth.tokens import PasswordResetTokenGenerator
+from rest_framework.exceptions import AuthenticationFailed
+from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
 
 class CustomTokenSerializer(TokenObtainPairSerializer):
@@ -16,14 +20,16 @@ class CustomTokenSerializer(TokenObtainPairSerializer):
 
 
 class UsersListSerializer(serializers.ModelSerializer):
+
     class Meta:
         model = User
         fields = (
             'id', 'email', 'first_name', 'last_name', 'photo', 'phone')
 
 
+
 class UsersDetailSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(max_length=128, min_length=8, write_only=True, style={'input_type': 'password'})
+    password = serializers.CharField(max_length=128, min_length=8, write_only=True, style={'input_type': 'password'}, label='Пароль')
 
     class Meta:
         model = User
@@ -60,19 +66,6 @@ class RatingListSerializer(serializers.ModelSerializer):
         return rating
 
 
-class ReviewsListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Reviews
-        fields = ('id', 'consultant', 'text')
-        read_only_fields = ('consultant',)
-
-
-class ReviewsDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Reviews
-        fields = ("id", "name", 'email', "text")
-
-
 class CategoryConsultantListSerializer(serializers.ModelSerializer):
     class Meta:
         model = CategoryConsultant
@@ -92,7 +85,6 @@ class ConsultantListSerializer(serializers.ModelSerializer):
     specialty = CategoryConsultantListSerializer(many=True, read_only=True)
     middle_star = serializers.FloatField()
 
-
     class Meta:
         model = Consultant
         fields = ('id', 'user', 'specialty', 'title', 'description', 'middle_star')
@@ -104,6 +96,18 @@ class ProfileConsultantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Consultant
         fields = ('id', 'user', 'title', 'description')
+
+
+class ReviewsListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reviews
+        fields = ('id', 'consultant', 'text')
+
+
+class ReviewsDetailSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Reviews
+        fields = ("id", 'consultant', "name", 'email', "text")
 
 
 class ImageConsultantDetailSerializer(serializers.ModelSerializer):
@@ -133,13 +137,15 @@ class RegistrationClientSerializer(serializers.ModelSerializer):
         max_length=128,
         min_length=8,
         write_only=True,
-        style={'input_type': 'password'}
+        style={'input_type': 'password'},
+        label='Пароль'
     )
     password1 = serializers.CharField(
         max_length=128,
         min_length=8,
         write_only=True,
         style={'input_type': 'password'},
+        label='Потверждение пароля'
     )
 
     class Meta:
@@ -169,6 +175,7 @@ class RegistrationConsultantSerializer(serializers.ModelSerializer):
         min_length=8,
         write_only=True,
         style={'input_type': 'password'},
+        label='Потверждение пароля'
     )
 
     class Meta:

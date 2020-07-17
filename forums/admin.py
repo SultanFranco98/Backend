@@ -18,7 +18,7 @@ class CommentInline(admin.TabularInline):
 
 class ForumAdmin(admin.ModelAdmin):
     inlines = [CommentInline]
-    list_display = ['user', 'title', 'description', 'pub_date']
+    list_display = ['user', 'title',  'pub_date']
 
 
 class SubCategoryAdmin(admin.ModelAdmin):

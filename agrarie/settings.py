@@ -26,10 +26,10 @@ INSTALLED_APPS = [
     'users.apps.UsersConfig',
     'forums.apps.ForumsConfig',
     'article.apps.ArticleConfig',
-    'chat.apps.ChatConfig',
     'informations.apps.InformationsConfig',
-    'channels',
+    'django_filters',
     'corsheaders',
+    'djoser',
     'drf_yasg',
 ]
 
@@ -45,7 +45,6 @@ MIDDLEWARE = [
 ]
 
 ROOT_URLCONF = 'agrarie.urls'
-ASGI_APPLICATION = "agrarie.routing.application"
 
 CORS_ORIGIN_ALLOW_ALL = True
 CORS_ALLOW_CREDENTIALS = True
@@ -84,7 +83,7 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = 'agrarie.wsgi.application'
+WSGI_APPLICATION = 'agrarie.wsgi.application'
 
 DATABASES = {
     'default': {
@@ -133,14 +132,15 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 JET_SIDE_MENU_COMPACT = True
 
 REST_FRAMEWORK = {
-    # 'DEFAULT_AUTHENTICATION_CLASSES': (
-    #     'rest_framework_simplejwt.authentication.JWTAuthentication',
-    # ),
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'rest_framework_simplejwt.authentication.JWTAuthentication',
+    ),
     'DEFAULT_PERMISSION_CLASSES': (
         'rest_framework.permissions.IsAuthenticated',
     ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 9,
+    'DEFAULT_FILTER_BACKENDS': ['django_filters.rest_framework.DjangoFilterBackend'],
 }
 
 SIMPLE_JWT = {
@@ -169,11 +169,9 @@ SIMPLE_JWT = {
     'SLIDING_TOKEN_REFRESH_LIFETIME': timedelta(days=1),
 }
 
-CHANNEL_LAYERS = {
-    "default": {
-        "BACKEND": "channels_redis.core.RedisChannelLayer",
-        "CONFIG": {
-            "hosts": [("127.0.0.1", 6379)],
-        },
-    },
-}
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
+

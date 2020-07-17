@@ -41,22 +41,23 @@ class ForumDetailSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Forum
-        fields = ['id', 'user', 'category', 'subcategory', 'types', 'subtypes', 'title', 'description', 'pub_date',
+        fields = ['id', 'user', 'category', 'subcategory', 'types', 'subtypes', 'title', 'pub_date',
                   'comments']
+        read_only_fields = ['user', 'pub_date']
 
 
 class ForumCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = Forum
-        fields = ['id', 'user', 'category', 'subcategory', 'types', 'subtypes', 'title', 'description', 'pub_date']
+        fields = ['id', 'user', 'category', 'subcategory', 'types', 'subtypes', 'title', 'pub_date']
         read_only_fields = ['user', 'pub_date']
 
 
 class ForumListSerializer(serializers.ModelSerializer):
-    user = UsersListSerializer(many=False)
+    user = UsersListSerializer(many=False, read_only=True)
     comment_count = serializers.IntegerField()
 
     class Meta:
         model = Forum
-        fields = ['id', 'user', 'category', 'subcategory', 'types', 'subtypes', 'title', 'description', 'pub_date', 'comment_count']
+        fields = ['id', 'user', 'category', 'subcategory', 'types', 'subtypes', 'title', 'pub_date', 'comment_count']
         read_only_fields = ['user', 'pub_date']
