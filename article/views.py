@@ -27,7 +27,6 @@ class VoteViewSet(ModelViewSet):
 class ArticleViewSet(ModelViewSet):
     # permission_classes = [IsConsultant | IsAdminUser]
     permission_classes = [AllowAny]
-    serializer_class = ArticleSerializer
     queryset = Article.objects.all()
     pagination_class = CustomResultsSetPagination
     filter_backends = [filters.SearchFilter, DjangoFilterBackend]
@@ -40,3 +39,9 @@ class ArticleViewSet(ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.action == 'list':
+            return ArticleListSerializer
+        else:
+            return ArticleDetailSerializer

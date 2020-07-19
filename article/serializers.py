@@ -13,8 +13,9 @@ class VoteSerializer(serializers.ModelSerializer):
         read_only_fields = ['user', 'pub_date']
 
 
-class ArticleSerializer(serializers.ModelSerializer):
+class ArticleListSerializer(serializers.ModelSerializer):
     votes = serializers.IntegerField(source='total_votes', read_only=True)
+    user = UsersListSerializer(read_only=True, many=False)
 
     class Meta:
         model = Article
@@ -23,4 +24,12 @@ class ArticleSerializer(serializers.ModelSerializer):
         read_only_fields = ['user', 'pub_date', 'votes', 'status']
 
 
+class ArticleDetailSerializer(serializers.ModelSerializer):
+    votes = serializers.IntegerField(source='total_votes', read_only=True)
+    user = UsersListSerializer(read_only=True, many=False)
 
+    class Meta:
+        model = Article
+        fields = ['id', 'user', 'category', 'subcategory', 'types', 'subtypes', 'title', 'text', 'pub_date', 'status',
+                  'votes']
+        read_only_fields = ['user', 'pub_date', 'votes', 'status']
