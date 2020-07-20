@@ -7,6 +7,7 @@ admin.site.site_header = "Агро Консультирование"
 admin.site.site_title = "Агро Консультирование"
 admin.site.index_title = "Агро Консультирование"
 
+
 class SpecialtyAdmin(admin.ModelAdmin):
     list_display = ('title',)
 
@@ -35,10 +36,13 @@ class ImageConsultantInline(admin.TabularInline):
             return self.extra
         return 0
 
+
 class ConsultantAdmin(admin.ModelAdmin):
     inlines = (CategoryConsultantInline, ImageConsultantInline)
     list_display = ('user', 'get_consultant', 'short_description')
     fields = ('user', 'get_consultant', 'title', 'description', 'comment')
+    list_filter = ['user__email', 'user__first_name', 'user__last_name', 'user__is_active']
+    search_fields = ['user__email', 'user__first_name', 'user__last_name']
     readonly_fields = ('get_consultant',)
 
     def get_consultant(self, obj):
@@ -51,13 +55,16 @@ class ConsultantAdmin(admin.ModelAdmin):
 
 class UserAdmin(UserAdmin):
     model = User
-    list_display = ('email', 'first_name', 'last_name', 'phone', 'is_active', 'is_client', 'is_consultant', 'is_superuser')
+    list_display = (
+    'email', 'first_name', 'last_name', 'phone', 'is_active', 'is_client', 'is_consultant', 'is_superuser')
     fieldsets = (
         (None, {'fields': (
             'email', 'first_name', 'last_name', 'phone', 'is_active', 'is_client', 'is_consultant',
             'date_joined')}),
     )
     ordering = ('email',)
+    list_filter = ['email', 'first_name', 'last_name', 'is_active', 'is_client', 'is_consultant']
+    search_fields = ['email', 'first_name', 'last_name']
     readonly_fields = ['date_joined']
 
     add_fieldsets = (
@@ -74,6 +81,8 @@ class UserAdmin(UserAdmin):
 class RatingAdmin(admin.ModelAdmin):
     list_display = ['user', 'consultant', 'star']
     fields = ['user', 'get_user', 'consultant', 'get_consultant', 'star']
+    list_filter = ['user__email', 'user__first_name', 'user__last_name', 'star']
+    search_fields = ['user__email', 'user__first_name', 'user__last_name']
     readonly_fields = ['get_user', 'get_consultant']
 
     def get_user(self, obj):
@@ -94,11 +103,15 @@ class RatingAdmin(admin.ModelAdmin):
 
 class RatingStartAdmin(admin.ModelAdmin):
     list_display = ['id', 'value']
+    list_filter = ['value']
+    search_fields = ['value']
 
 
 class ReviewsAdmin(admin.ModelAdmin):
     list_display = ['consultant', 'text', 'name', 'email', ]
     fields = ['consultant', 'get_consultant', 'name', 'email', 'text', ]
+    list_filter = ['consultant__user__email', 'consultant__user__first_name', 'consultant__user__last_name']
+    search_fields = ['consultant__user__email', 'consultant__user__first_name', 'consultant__user__last_name']
     readonly_fields = ['get_consultant']
 
     def get_consultant(self, obj):

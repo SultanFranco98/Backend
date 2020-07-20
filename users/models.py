@@ -98,7 +98,7 @@ class ImageConsultant(models.Model):
 class CategoryConsultant(models.Model):
     consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, blank=False, null=False,
                                    related_name='specialty', verbose_name='Консультант')
-    category = models.ForeignKey(Specialty, on_delete=models.CASCADE, blank=False, null=False,
+    category = models.ForeignKey(Specialty, on_delete=models.CASCADE, unique=True, blank=False, null=False,
                                  verbose_name='Специальность')
 
     class Meta:
