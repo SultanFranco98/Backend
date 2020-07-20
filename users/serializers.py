@@ -2,10 +2,6 @@ from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
 from .models import *
 from agrarie.settings import SIMPLE_JWT
-from django.contrib.auth.tokens import PasswordResetTokenGenerator
-from rest_framework.exceptions import AuthenticationFailed
-from django.utils.encoding import smart_str, force_str, smart_bytes, DjangoUnicodeDecodeError
-from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 
 
 class CustomTokenSerializer(TokenObtainPairSerializer):
@@ -20,16 +16,16 @@ class CustomTokenSerializer(TokenObtainPairSerializer):
 
 
 class UsersListSerializer(serializers.ModelSerializer):
-
     class Meta:
         model = User
         fields = (
             'id', 'email', 'first_name', 'last_name', 'photo', 'phone')
-
+        read_only_fields = ['email']
 
 
 class UsersDetailSerializer(serializers.ModelSerializer):
-    password = serializers.CharField(max_length=128, min_length=8, write_only=True, style={'input_type': 'password'}, label='Пароль')
+    password = serializers.CharField(max_length=128, min_length=8, write_only=True, style={'input_type': 'password'},
+                                     label='Пароль')
 
     class Meta:
         model = User
@@ -96,6 +92,21 @@ class ProfileConsultantSerializer(serializers.ModelSerializer):
     class Meta:
         model = Consultant
         fields = ('id', 'user', 'title', 'description')
+
+    def update(self, instance, validated_data):
+        user_data = validated_data.pop('user')
+        user = instance.user
+        instance.title = validated_data.get('title', instance.title)
+        instance.description = validated_data.get('description', instance.description)
+        instance.save()
+        user.email = user_data.get('email', user.email)
+        user.first_name = user_data.get('first_name', user.first_name)
+        user.last_name = user_data.get('last_name', user.last_name)
+        user.photo = user_data.get('photo', user.photo)
+        user.phone = user_data.get('phone', user.phone)
+        user.save()
+        return instance
+
 
 
 class ReviewsListSerializer(serializers.ModelSerializer):
