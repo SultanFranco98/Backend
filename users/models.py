@@ -39,17 +39,17 @@ class CustomUserManager(BaseUserManager):
 
 
 class User(AbstractBaseUser, PermissionsMixin):
-    email = models.EmailField(db_index=True, unique=True, blank=False, verbose_name='Почта')
-    password = models.CharField(max_length=128, blank=False, null=False, verbose_name='Пароль')
-    first_name = models.CharField(max_length=30, blank=False, null=False, verbose_name='Имя')
-    last_name = models.CharField(max_length=30, blank=False, null=False, verbose_name='Фамилия')
-    photo = models.ImageField(upload_to='profile-photo/', blank=True, null=True, verbose_name='Фотография')
-    phone = models.CharField(max_length=30, blank=True, null=True, verbose_name='Телефон')
-    is_active = models.BooleanField(default=False, verbose_name='Активный')
-    is_client = models.BooleanField(default=False, verbose_name='Клиент')
-    is_consultant = models.BooleanField(default=False, verbose_name='Исполнитель')
-    is_staff = models.BooleanField(default=False, verbose_name='Сотрудник')
-    date_joined = models.DateTimeField(auto_now_add=True, verbose_name='Дата регистрации')
+    email = models.EmailField(db_index=True, unique=True, blank=False, verbose_name=_('Почта'))
+    password = models.CharField(max_length=128, blank=False, null=False, verbose_name=_('Пароль'))
+    first_name = models.CharField(max_length=30, blank=False, null=False, verbose_name=_('Имя'))
+    last_name = models.CharField(max_length=30, blank=False, null=False, verbose_name=_('Фамилия'))
+    photo = models.ImageField(upload_to='profile-photo/', blank=True, null=True, verbose_name=_('Фотография'))
+    phone = models.CharField(max_length=30, blank=True, null=True, verbose_name=_('Телефон'))
+    is_active = models.BooleanField(default=False, verbose_name=_('Активный'))
+    is_client = models.BooleanField(default=False, verbose_name=_('Клиент'))
+    is_consultant = models.BooleanField(default=False, verbose_name=_('Исполнитель'))
+    is_staff = models.BooleanField(default=False, verbose_name=_('Сотрудник'))
+    date_joined = models.DateTimeField(auto_now_add=True, verbose_name=_('Дата регистрации'))
 
     USERNAME_FIELD = 'email'
 
@@ -59,19 +59,19 @@ class User(AbstractBaseUser, PermissionsMixin):
         return self.email
 
     class Meta:
-        verbose_name = 'Пользователь'
-        verbose_name_plural = 'Пользователи'
+        verbose_name = _('Пользователь')
+        verbose_name_plural = _('Пользователи')
 
 
 class Consultant(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
-    title = models.CharField(max_length=200, blank=True, null=True, verbose_name='Заголовок')
-    description = models.TextField(blank=True, null=True, verbose_name='Описание')
-    comment = models.TextField(max_length=200, blank=True, null=True, verbose_name='Комментарии')
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('Пользователь'))
+    title = models.CharField(max_length=200, blank=True, null=True, verbose_name=_('Заголовок'))
+    description = models.TextField(blank=True, null=True, verbose_name=_('Описание'))
+    comment = models.TextField(max_length=200, blank=True, null=True, verbose_name=_('Комментарии'))
 
     class Meta:
-        verbose_name = 'Консультант'
-        verbose_name_plural = 'Консультанты'
+        verbose_name = _('Консультант')
+        verbose_name_plural = _('Консультанты')
 
     def __str__(self):
         return '{}'.format(self.user)
@@ -83,11 +83,11 @@ class Consultant(models.Model):
 
 
 class Specialty(models.Model):
-    title = models.CharField(max_length=100, blank=False, null=False, verbose_name='Специальность')
+    title = models.CharField(max_length=100, blank=False, null=False, verbose_name=_('Специальность'))
 
     class Meta:
-        verbose_name = 'Специальность'
-        verbose_name_plural = 'Специальности'
+        verbose_name = _('Специальность')
+        verbose_name_plural = _('Специальности')
 
     def __str__(self):
         return self.title
@@ -96,13 +96,13 @@ class Specialty(models.Model):
 class ImageConsultant(models.Model):
     consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, blank=False, null=False,
                                    related_name='certificates',
-                                   verbose_name='Консультант')
+                                   verbose_name=_('Консультант'))
     certificate_image = models.ImageField(upload_to='certificate-image/', blank=True, null=True,
-                                          verbose_name='Сертификаты')
+                                          verbose_name=_('Сертификаты'))
 
     class Meta:
-        verbose_name = 'Сертификат'
-        verbose_name_plural = 'Сертификаты'
+        verbose_name = _('Сертификат')
+        verbose_name_plural = _('Сертификаты')
 
     def __str__(self):
         return '{}'.format(self.consultant)
@@ -118,35 +118,35 @@ class ImageConsultant(models.Model):
 
 class CategoryConsultant(models.Model):
     consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, blank=False, null=False,
-                                   related_name='specialty', verbose_name='Консультант')
+                                   related_name='specialty', verbose_name=_('Консультант'))
     category = models.ForeignKey(Specialty, on_delete=models.CASCADE, blank=False, null=False,
-                                 verbose_name='Специальность')
+                                 verbose_name=_('Специальность'))
 
     class Meta:
-        verbose_name = 'Специальность'
-        verbose_name_plural = 'Специальности'
+        verbose_name = _('Специальность')
+        verbose_name_plural = _('Специальности')
 
     def __str__(self):
         return '{}'.format(self.consultant)
 
 
 class RatingStart(models.Model):
-    value = models.SmallIntegerField(default=0, verbose_name='Значение')
+    value = models.SmallIntegerField(default=0, verbose_name=_('Значение'))
 
     def __str__(self):
         return '{}'.format(self.value)
 
     class Meta:
-        verbose_name = "Звезда рейтинга"
-        verbose_name_plural = "Звезды рейтинга"
+        verbose_name = _("Звезда рейтинга")
+        verbose_name_plural = _("Звезды рейтинга")
         ordering = ["-value"]
 
 
 class Rating(models.Model):
-    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Пользователь')
-    consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, verbose_name='Консультант',
+    user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name=_('Пользователь'))
+    consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, verbose_name=_('Консультант'),
                                    related_name="ratings")
-    star = models.ForeignKey(RatingStart, on_delete=models.CASCADE, verbose_name='Звезда')
+    star = models.ForeignKey(RatingStart, on_delete=models.CASCADE, verbose_name=_('Звезда'))
 
     def __str__(self):
         return '{}'.format(self.user)
@@ -157,15 +157,15 @@ class Rating(models.Model):
 
 
 class Reviews(models.Model):
-    name = models.CharField(max_length=100, verbose_name='Имя')
+    name = models.CharField(max_length=100, verbose_name=_('Имя'))
     email = models.EmailField()
-    text = models.TextField(max_length=5000, verbose_name='Сообщение')
-    consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, verbose_name='Консультант',
+    text = models.TextField(max_length=5000, verbose_name=_('Сообщение'))
+    consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, verbose_name=_('Консультант'),
                                    related_name='reviews')
 
     def __str__(self):
         return self.name
 
     class Meta:
-        verbose_name = "Отзыв"
-        verbose_name_plural = "Отзывы"
+        verbose_name = _("Отзыв")
+        verbose_name_plural = _("Отзывы")
