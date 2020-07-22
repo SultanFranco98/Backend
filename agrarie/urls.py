@@ -14,6 +14,7 @@ urlpatterns = [
                   path('api/', include('article.urls')),
                   path('api/auth/', include('djoser.urls')),
                   path('api/', include('informations.urls')),
+                  path('auth/', include('rest_framework_social_oauth2.urls')),
               ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
 
 urlpatterns += doc_urls
