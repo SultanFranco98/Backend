@@ -2,19 +2,40 @@ from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.template.defaultfilters import truncatechars
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
+from django.utils import timezone
 from django.utils.safestring import mark_safe
+from django.utils.translation import ugettext_lazy as _
 
 
 class CustomUserManager(BaseUserManager):
     use_in_migrations = True
 
-    def create_user(self, email, **extra_fields):
+    def _create_user(self, email, password, is_client, is_staff, is_superuser, **extra_fields):
         if email:
             email = self.normalize_email(email)
-        user = self.model(email=email, **extra_fields)
-        user.save()
+        now = timezone.now()
+        user = self.model(
+            email=email,
+            is_client=is_client,
+            is_staff=is_staff,
+            is_active=True,
+            is_superuser=is_superuser,
+            last_login=now,
+            date_joined=now,
+            **extra_fields
+        )
+        if password:
+            user.set_password(password)
+        user.save(using=self._db)
         return user
 
+    def create_user(self, email, password=None, **extra_fields):
+        return self._create_user(email, password, True, False, False, **extra_fields)
+
+    def create_superuser(self, email, password=None, **extra_fields):
+        user = self._create_user(email, password, False, True, True, **extra_fields)
+        user.save(using=self._db)
+        return user
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -23,7 +44,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     first_name = models.CharField(max_length=30, blank=False, null=False, verbose_name='Имя')
     last_name = models.CharField(max_length=30, blank=False, null=False, verbose_name='Фамилия')
     photo = models.ImageField(upload_to='profile-photo/', blank=True, null=True, verbose_name='Фотография')
-    phone = models.CharField(max_length=30, blank=False, null=False, verbose_name='Телефон')
+    phone = models.CharField(max_length=30, blank=True, null=True, verbose_name='Телефон')
     is_active = models.BooleanField(default=False, verbose_name='Активный')
     is_client = models.BooleanField(default=False, verbose_name='Клиент')
     is_consultant = models.BooleanField(default=False, verbose_name='Исполнитель')
@@ -98,7 +119,7 @@ class ImageConsultant(models.Model):
 class CategoryConsultant(models.Model):
     consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, blank=False, null=False,
                                    related_name='specialty', verbose_name='Консультант')
-    category = models.ForeignKey(Specialty, on_delete=models.CASCADE, unique=True, blank=False, null=False,
+    category = models.ForeignKey(Specialty, on_delete=models.CASCADE, blank=False, null=False,
                                  verbose_name='Специальность')
 
     class Meta:

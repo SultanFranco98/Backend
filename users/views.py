@@ -8,6 +8,8 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from .serializers import *
 from rest_framework.exceptions import PermissionDenied
 from agrarie.pagintions import CustomResultsSetPagination
+from rest_framework.permissions import IsAdminUser
+from .permissions import IsClient
 
 
 class CustomTokenView(TokenObtainPairView):
