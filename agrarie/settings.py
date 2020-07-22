@@ -2,6 +2,7 @@ import os
 from datetime import timedelta
 from decouple import config
 from django.conf import settings
+import django.conf.locale
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
@@ -12,6 +13,7 @@ DEBUG = config('DEBUG')
 ALLOWED_HOSTS = ['134.122.76.224', '127.0.0.1']
 
 INSTALLED_APPS = [
+    'modeltranslation',
     'jet.dashboard',
     'jet',
     'django.contrib.admin',
@@ -39,6 +41,7 @@ MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'corsheaders.middleware.CorsMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -116,6 +119,34 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 LANGUAGE_CODE = 'ru'
+
+gettext = lambda s: s
+LANGUAGES = (
+    ('ru', gettext('Russian')),
+    ('kg', gettext('Kyrgyz')),
+)
+
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'ru'
+MODELTRANSLATION_LANGUAGES = ('ru', 'kg')
+MODELTRANSLATION_AVAILABLE_LANGUAGES = ('ru', 'kg')
+MODELTRANSLATION_FALLBACK_LANGUAGES = ('ru', 'kg')
+
+EXTRA_LANG_INFO = {
+    'kg': {
+
+        'bidi': False,
+        'code': 'kg',
+        'name': 'Kyrgyz',
+        'name_local': 'Кыргызский',
+    }
+}
+
+LANG_INFO = dict(django.conf.locale.LANG_INFO, **EXTRA_LANG_INFO)
+django.conf.locale.LANG_INFO = LANG_INFO
+
+LOCALE_PATHS = (
+    os.path.join(BASE_DIR, 'locale'),
+)
 
 TIME_ZONE = 'Asia/Bishkek'
 
