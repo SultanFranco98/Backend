@@ -3,8 +3,9 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from .yasg import urlpatterns as doc_urls
+from django.conf.urls.i18n import i18n_patterns
 
-urlpatterns = [
+urlpatterns = i18n_patterns[
                   path('jet/', include('jet.urls', 'jet')),
                   path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),
                   path('admin/', admin.site.urls),

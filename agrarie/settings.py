@@ -1,5 +1,6 @@
 import os
 from datetime import timedelta
+import django.conf.locale
 
 from decouple import config
 
@@ -36,6 +37,7 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'django.middleware.locale.LocaleMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -175,3 +177,33 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
 
+gettext = lambda s: s
+LANGUAGES = (
+    ('ru', gettext('Russian')),
+    ('ky', gettext('Kyrgyz')),
+)
+
+MODELTRANSLATION_DEFAULT_LANGUAGE = 'ru'
+MODELTRANSLATION_LANGUAGES = ('ru', 'ky')
+MODELTRANSLATION_FALLBACK_LANGUAGES = ('ru', 'ky')
+
+EXTRA_LANG_INFO = {
+    'ky': {
+
+        'bidi': False,
+        'code': 'ky',
+        'name': 'Kyrgyz',
+        'name_local': 'Кыргызский',
+    },
+    'ru': {
+
+        'bidi': False,
+        'code': 'ru',
+        'name': 'Russian',
+        'name_local': 'Русский',
+    },
+
+}
+
+LANG_INFO = dict(EXTRA_LANG_INFO.items())
+django.conf.locale.LANG_INFO = LANG_INFO
