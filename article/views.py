@@ -1,4 +1,4 @@
-from rest_framework.viewsets import ModelViewSet
+from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
 from rest_framework.permissions import IsAdminUser
 from users.permissions import IsClient, IsConsultant
 from .serializers import *
@@ -45,3 +45,31 @@ class ArticleViewSet(ModelViewSet):
             return ArticleListSerializer
         else:
             return ArticleDetailSerializer
+
+
+class PopularArticleViewSet(ReadOnlyModelViewSet):
+    # permission_classes = [IsConsultant | IsAdminUser]
+    permission_classes = [AllowAny]
+    serializer_class = ArticleListSerializer
+    pagination_class = CustomResultsSetPagination
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    filterset_fields = ['category', 'subcategory', 'types', 'subtypes']
+    search_fields = ['title']
+
+    def get_queryset(self):
+        queryset = Article.objects.order_by('-votes').filter(status=True)
+        return queryset
+
+
+class NewArticleViewSet(ReadOnlyModelViewSet):
+    # permission_classes = [IsConsultant | IsAdminUser]
+    permission_classes = [AllowAny]
+    serializer_class = ArticleListSerializer
+    pagination_class = CustomResultsSetPagination
+    filter_backends = [filters.SearchFilter, DjangoFilterBackend]
+    filterset_fields = ['category', 'subcategory', 'types', 'subtypes']
+    search_fields = ['title']
+
+    def get_queryset(self):
+        queryset = Article.objects.order_by('-pub_date').filter(status=True)
+        return queryset
