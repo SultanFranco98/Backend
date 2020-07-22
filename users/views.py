@@ -33,11 +33,16 @@ class RatingViewSet(ModelViewSet):
     queryset = Rating.objects.all()
     # permission_classes = [IsClient | IsAdminUser]
     permission_classes = [AllowAny]
-    serializer_class = RatingListSerializer
     pagination_class = CustomResultsSetPagination
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
+    def get_serializer_class(self):
+        if self.action == 'create':
+            return RatingCreateSerializer
+        else:
+            return RatingListSerializer
 
 
 class CertificateViewSet(ModelViewSet):

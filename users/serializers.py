@@ -45,7 +45,7 @@ class RatingStarSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 
-class RatingListSerializer(serializers.ModelSerializer):
+class RatingCreateSerializer(serializers.ModelSerializer):
     user = UsersListSerializer(many=False, read_only=True)
 
     class Meta:
@@ -60,6 +60,16 @@ class RatingListSerializer(serializers.ModelSerializer):
             defaults={'star': validated_data.get('star')}
         )
         return rating
+
+
+class RatingListSerializer(serializers.ModelSerializer):
+    user = UsersListSerializer(many=False, read_only=True)
+    star = RatingStarSerializer(many=False, read_only=True)
+
+    class Meta:
+        model = Rating
+        fields = ('id', 'user', 'consultant', 'star',)
+        read_only_fields = ('id', 'user',)
 
 
 class CategoryConsultantListSerializer(serializers.ModelSerializer):
@@ -108,7 +118,6 @@ class ProfileConsultantSerializer(serializers.ModelSerializer):
         return instance
 
 
-
 class ReviewsListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reviews
@@ -137,10 +146,11 @@ class ConsultantDetailSerializer(serializers.ModelSerializer):
     user = UsersListSerializer(many=False)
     specialty = CategoryConsultantListSerializer(many=True, read_only=True)
     reviews = ReviewsDetailSerializer(many=True, read_only=True)
+    ratings = RatingListSerializer(many=True, read_only=True)
 
     class Meta:
         model = Consultant
-        fields = ('id', 'user', 'specialty', 'title', 'description', 'reviews')
+        fields = ('id', 'user', 'specialty', 'title', 'description', 'reviews', 'ratings')
 
 
 class RegistrationClientSerializer(serializers.ModelSerializer):
