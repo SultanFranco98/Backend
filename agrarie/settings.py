@@ -1,7 +1,5 @@
 import os
 from datetime import timedelta
-import django.conf.locale
-
 from decouple import config
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -10,10 +8,10 @@ SECRET_KEY = config('SECRET_KEY')
 
 DEBUG = config('DEBUG')
 
+
 ALLOWED_HOSTS = ['134.122.76.224', '127.0.0.1']
 
 INSTALLED_APPS = [
-    'modeltranslation',
     'jet.dashboard',
     'jet',
     'django.contrib.admin',
@@ -37,7 +35,6 @@ INSTALLED_APPS = [
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -176,34 +173,3 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_HOST_USER = os.environ.get('EMAIL_HOST_USER')
 EMAIL_HOST_PASSWORD = os.environ.get('EMAIL_HOST_PASSWORD')
-
-gettext = lambda s: s
-LANGUAGES = (
-    ('ru', gettext('Russian')),
-    ('ky', gettext('Kyrgyz')),
-)
-
-MODELTRANSLATION_DEFAULT_LANGUAGE = 'ru'
-MODELTRANSLATION_LANGUAGES = ('ru', 'ky')
-MODELTRANSLATION_FALLBACK_LANGUAGES = ('ru', 'ky')
-
-EXTRA_LANG_INFO = {
-    'ky': {
-
-        'bidi': False,
-        'code': 'ky',
-        'name': 'Kyrgyz',
-        'name_local': 'Кыргызский',
-    },
-    'ru': {
-
-        'bidi': False,
-        'code': 'ru',
-        'name': 'Russian',
-        'name_local': 'Русский',
-    },
-
-}
-
-LANG_INFO = dict(EXTRA_LANG_INFO.items())
-django.conf.locale.LANG_INFO = LANG_INFO

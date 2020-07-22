@@ -8,22 +8,13 @@ from django.utils.safestring import mark_safe
 class CustomUserManager(BaseUserManager):
     use_in_migrations = True
 
-    def create_user(self, email, password, **extra_fields):
-
+    def create_user(self, email, **extra_fields):
         if email:
             email = self.normalize_email(email)
         user = self.model(email=email, **extra_fields)
-        user.set_password(password)
         user.save()
         return user
 
-    def create_superuser(self, email, password, **extra_fields):
-        extra_fields.setdefault('is_superuser', True)
-        extra_fields.setdefault('is_staff', True)
-        extra_fields.setdefault('is_active', True)
-        if extra_fields.get('is_superuser') is not True:
-            raise ValueError('У суперпользователя поле is_superuser должен быть True.')
-        return self.create_user(email, password, **extra_fields)
 
 
 class User(AbstractBaseUser, PermissionsMixin):
@@ -107,7 +98,7 @@ class ImageConsultant(models.Model):
 class CategoryConsultant(models.Model):
     consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, blank=False, null=False,
                                    related_name='specialty', verbose_name='Консультант')
-    category = models.ForeignKey(Specialty, on_delete=models.CASCADE, blank=False, null=False,
+    category = models.ForeignKey(Specialty, on_delete=models.CASCADE, unique=True, blank=False, null=False,
                                  verbose_name='Специальность')
 
     class Meta:

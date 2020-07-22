@@ -40,9 +40,6 @@ class Migration(migrations.Migration):
                 'verbose_name': 'Пользователь',
                 'verbose_name_plural': 'Пользователи',
             },
-            managers=[
-                ('objects', users.models.CustomUserManager()),
-            ],
         ),
         migrations.CreateModel(
             name='Category',

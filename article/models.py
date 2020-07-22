@@ -7,7 +7,7 @@ from forums.models import Category, SubCategory, Types, SubTypes
 class Article(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор')
     category = models.ForeignKey(Category, on_delete=models.CASCADE, verbose_name='Категория')
-    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, verbose_name='Подкатегория')
+    subcategory = models.ForeignKey(SubCategory, on_delete=models.CASCADE, verbose_name='Подкатегория',  blank=True, null=True)
     types = models.ForeignKey(Types, on_delete=models.CASCADE, verbose_name='Вид', blank=True, null=True)
     subtypes = models.ForeignKey(SubTypes, on_delete=models.CASCADE, verbose_name='Подвид', blank=True, null=True)
     title = models.CharField(max_length=100, verbose_name='Заголовок')
