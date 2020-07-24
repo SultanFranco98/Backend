@@ -118,6 +118,12 @@ class ProfileConsultantSerializer(serializers.ModelSerializer):
         return instance
 
 
+class ProfilePhotoSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['photo']
+
+
 class ReviewsListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reviews

@@ -131,3 +131,34 @@ class UserViewSet(ModelViewSet):
                 return UsersListSerializer
         except:
             raise PermissionDenied
+
+
+class ProfilePhotoViewSet(ModelViewSet):
+    permission_classes = [AllowAny]
+    serializer_class = ProfilePhotoSerializer
+    queryset = User.objects.all()
+
+    def retrieve(self, request, *args, **kwargs):
+        name = self.kwargs['name']
+        pk = self.request.user.pk
+        try:
+            if request.user.is_consultant:
+                obj = get_object_or_404(User, first_name=name, id=pk)
+                serializer = self.get_serializer(obj)
+                return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            raise PermissionDenied
+
+    def update(self, request, *args, **kwargs):
+        name = self.kwargs['name']
+        pk = self.request.user.pk
+        try:
+            if request.user.is_consultant:
+                instance = get_object_or_404(User, first_name=name, id=pk)
+                serializer = self.get_serializer(instance=instance, data=request.data)
+                serializer.is_valid(raise_exception=True)
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+        except:
+            raise PermissionDenied
+
