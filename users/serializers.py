@@ -201,7 +201,7 @@ class RegistrationConsultantSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Consultant
-        fields = ('user', 'specialty', 'certificates', 'password1', 'description', 'comment')
+        fields = ('id', 'user', 'specialty', 'certificates', 'password1', 'description', 'comment')
 
     def create(self, validated_data):
         user_data = validated_data.pop('user')

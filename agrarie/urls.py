@@ -3,7 +3,7 @@ from django.urls import path, include
 from django.conf.urls.static import static
 from django.conf import settings
 from .yasg import urlpatterns as doc_urls
-
+from rest_framework_social_oauth2 import urls
 urlpatterns = [
                   path('jet/', include('jet.urls', 'jet')),
                   path('jet/dashboard/', include('jet.dashboard.urls', 'jet-dashboard')),

@@ -60,15 +60,15 @@ class ConsultantViewSet(ReadOnlyModelViewSet):
 
     def get_queryset(self):
         specialty = CategoryConsultant.objects.filter(category=self.kwargs['pk'])
-        consultant = []
+        consultants = []
         count = 0
         for spec in specialty:
-            consultant += Consultant.objects.filter(id=specialty[count].consultant.pk, user__is_active=True).annotate(
+            consultants += Consultant.objects.filter(id=specialty[count].consultant.pk, user__is_active=True).annotate(
                 middle_star=models.Sum(models.F('ratings__star__value')) / models.Count(
                     models.F('ratings')),
             )
             count += 1
-        return consultant
+        return consultants
 
     def retrieve(self, request, *args, **kwargs):
         queryset = get_object_or_404(Consultant, id=kwargs['pk'])
