@@ -115,7 +115,7 @@ class ImageConsultant(models.Model):
         return self.certificate_image.url
 
     def certificate_tag(self):
-        return mark_safe('<img src="%s" />' % self.get_certificate())
+        return mark_safe('<img src="%s" width="300" height="450"/>' % self.get_certificate())
 
     certificate_tag.short_description = 'Сертификаты'
 
