@@ -138,10 +138,6 @@ class ReviewsDetailSerializer(serializers.ModelSerializer):
 
 class ImageConsultantDetailSerializer(serializers.ModelSerializer):
 
-    def __init__(self, *args, **kwargs):
-        many = kwargs.pop('many', True)
-        super(ImageConsultantDetailSerializer, self).__init__(many=many, *args, **kwargs)
-
     class Meta:
         model = ImageConsultant
         fields = ('id', 'consultant', 'certificate_image',)
