@@ -51,6 +51,11 @@ class CertificateViewSet(ModelViewSet):
     serializer_class = ImageConsultantDetailSerializer
     pagination_class = CustomResultsSetPagination
 
+    def create(self, request, *args, **kwargs):
+        serializer = self.get_serializer(data=request.data, many=True)
+        serializer.is_valid(raise_exception=True)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 class ConsultantViewSet(ReadOnlyModelViewSet):
     # permission_classes = [IsClient | IsConsultant | IsAdminUser]
