@@ -52,7 +52,7 @@ class CertificateViewSet(ModelViewSet):
     pagination_class = CustomResultsSetPagination
 
     def create(self, request, *args, **kwargs):
-        serializer = self.get_serializer(data=request.data, many=isinstance(request.data, list))
+        serializer = self.get_serializer(data=request.data, files=request.FILES, many=True)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)
         headers = self.get_success_headers(serializer.data)
