@@ -118,12 +118,6 @@ class ProfileConsultantSerializer(serializers.ModelSerializer):
         return instance
 
 
-class ProfilePhotoSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = User
-        fields = ['photo']
-
-
 class ReviewsListSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reviews
@@ -134,13 +128,6 @@ class ReviewsDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Reviews
         fields = ("id", 'consultant', "name", 'email', "text")
-
-
-class ImageConsultantDetailSerializer(serializers.ModelSerializer):
-
-    class Meta:
-        model = ImageConsultant
-        fields = ('id', 'consultant', 'certificate_image',)
 
 
 class CategoryConsultantDetailSerializer(serializers.ModelSerializer):

@@ -45,29 +45,6 @@ class RatingViewSet(ModelViewSet):
             return RatingListSerializer
 
 
-class CertificateViewSet(ModelViewSet):
-    permission_classes = [AllowAny]
-    queryset = ImageConsultant.objects.all()
-    serializer_class = ImageConsultantDetailSerializer
-    pagination_class = CustomResultsSetPagination
-
-    def list(self, request):
-        queryset = self.get_queryset()
-        serializer = ImageConsultantDetailSerializer(queryset, many=True)
-        return Response(serializer.data)
-
-    def create(self, request, *args, **kwargs):
-        data = request.data
-        if isinstance(data, list):
-            serializer = self.get_serializer(data=request.data, many=True)
-        else:
-            serializer = self.get_serializer(data=request.data)
-        serializer.is_valid(raise_exception=True)
-        self.perform_create(serializer)
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
-
-
-
 class ConsultantViewSet(ReadOnlyModelViewSet):
     # permission_classes = [IsClient | IsConsultant | IsAdminUser]
     permission_classes = [AllowAny]
@@ -147,26 +124,3 @@ class UserViewSet(ModelViewSet):
                 return UsersListSerializer
         except:
             raise PermissionDenied
-
-
-class ProfilePhotoViewSet(ModelViewSet):
-    permission_classes = [AllowAny]
-    serializer_class = ProfilePhotoSerializer
-    queryset = User.objects.all()
-
-    def retrieve(self, request, *args, **kwargs):
-        name = self.kwargs['name']
-        pk = self.request.user.pk
-        obj = get_object_or_404(User, first_name=name, id=pk)
-        serializer = self.get_serializer(obj)
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
-    def update(self, request, *args, **kwargs):
-        name = self.kwargs['name']
-        pk = self.request.user.pk
-        instance = get_object_or_404(User, first_name=name, id=pk)
-        serializer = self.get_serializer(instance=instance, data=request.data)
-        serializer.is_valid(raise_exception=True)
-        serializer.save()
-        return Response(serializer.data, status=status.HTTP_200_OK)
-
