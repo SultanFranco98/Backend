@@ -58,7 +58,7 @@ class CertificateViewSet(ModelViewSet):
 
     def create(self, request, *args, **kwargs):
         data = request.data
-        if isinstance(data, list):  # <- is the main logic
+        if isinstance(data, list):
             serializer = self.get_serializer(data=request.data, many=True)
         else:
             serializer = self.get_serializer(data=request.data)
