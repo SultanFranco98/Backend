@@ -1,9 +1,10 @@
 from django.contrib import admin
 from .models import *
+from django.utils.translation import gettext_lazy as _
 
-admin.site.site_header = "Агро Консультирование"
-admin.site.site_title = "Агро Консультирование"
-admin.site.index_title = "Агро Консультирование"
+admin.site.site_header = _("Агро Консультирование")
+admin.site.site_title = _("Агро Консультирование")
+admin.site.index_title = _("Агро Консультирование")
 
 
 class AdditionInline(admin.TabularInline):

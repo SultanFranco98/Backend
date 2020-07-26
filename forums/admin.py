@@ -26,6 +26,12 @@ class ForumAdmin(admin.ModelAdmin):
     ordering = ['-pub_date']
 
 
+class CategoryAdmin(admin.ModelAdmin):
+    list_display = ['title', 'description']
+    list_filter = ['title']
+    search_fields = ['title', 'category']
+
+
 class SubCategoryAdmin(admin.ModelAdmin):
     list_display = ['title', 'category']
     list_filter = ['title', 'category']
@@ -44,7 +50,7 @@ class SubTypesAdmin(admin.ModelAdmin):
     search_fields = ['title', 'type']
 
 
-admin.site.register(Category)
+admin.site.register(Category, CategoryAdmin)
 admin.site.register(SubCategory, SubCategoryAdmin)
 admin.site.register(Types, TypesAdmin)
 admin.site.register(SubTypes, SubTypesAdmin)
