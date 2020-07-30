@@ -2,45 +2,13 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status, filters
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework.response import Response
-from rest_framework.viewsets import ModelViewSet, ReadOnlyModelViewSet
+from rest_framework.viewsets import ModelViewSet
 from rest_framework.permissions import IsAdminUser
 from users.permissions import IsClient, IsConsultant
 from rest_framework.permissions import AllowAny
 from agrarie.pagintions import CustomResultsSetPagination
 from .serializers import *
 from .models import *
-
-
-class CategoryViewSet(ReadOnlyModelViewSet):
-    # permission_classes = [IsAdminUser]
-    permission_classes = [AllowAny]
-    queryset = Category.objects.all()
-    serializer_class = CategorySerializer
-    pagination_class = CustomResultsSetPagination
-
-
-class SubCategoryViewSet(ReadOnlyModelViewSet):
-    # permission_classes = [IsAdminUser]
-    permission_classes = [AllowAny]
-    queryset = SubCategory.objects.all()
-    serializer_class = SubCategorySerializer
-    pagination_class = CustomResultsSetPagination
-
-
-class TypesViewSet(ReadOnlyModelViewSet):
-    # permission_classes = [IsAdminUser]
-    permission_classes = [AllowAny]
-    queryset = Types.objects.all()
-    serializer_class = TypesSerializer
-    pagination_class = CustomResultsSetPagination
-
-
-class SubTypesViewSet(ReadOnlyModelViewSet):
-    # permission_classes = [IsAdminUser]
-    permission_classes = [AllowAny]
-    queryset = SubTypes.objects.all()
-    serializer_class = SubTypesSerializer
-    pagination_class = CustomResultsSetPagination
 
 
 class ForumViewSet(ModelViewSet):

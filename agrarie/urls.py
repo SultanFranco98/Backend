@@ -4,6 +4,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from .yasg import urlpatterns as doc_urls
 from django.conf.urls.i18n import i18n_patterns
+from agrarie.search import GlobalSearchAPIView
 
 urlpatterns = [
                   path('jet/', include('jet.urls', 'jet')),
@@ -19,7 +20,9 @@ urlpatterns += doc_urls
 urlpatterns += i18n_patterns(
     path('admin/', admin.site.urls),
     path('api/', include('users.urls')),
+    path('api/text/', GlobalSearchAPIView.as_view()),
     path('api/', include('forums.urls')),
     path('api/', include('article.urls')),
+    path('api/', include('categories.urls')),
     path('i18n/', include('django.conf.urls.i18n')),
 )

@@ -8,12 +8,6 @@ class CategoryTranslationOptions(TranslationOptions):
     required_languages = ('ru', 'kg')
 
 
-@register(Specialty)
-class CategoryTranslationOptions(TranslationOptions):
-    fields = ('title',)
-    required_languages = ('ru', 'kg')
-
-
 @register(Reviews)
 class CategoryTranslationOptions(TranslationOptions):
     fields = ('text',)

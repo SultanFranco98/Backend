@@ -1,5 +1,7 @@
+from categories.serializers import CategoryConsultantListSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 from rest_framework import serializers
+from categories.models import CategoryConsultant
 from .models import *
 from agrarie.settings import SIMPLE_JWT
 
@@ -33,12 +35,6 @@ class UsersDetailSerializer(serializers.ModelSerializer):
             'id', 'email', 'password', 'first_name', 'last_name', 'photo', 'phone')
 
 
-class SpecialtySerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Specialty
-        fields = '__all__'
-
-
 class RatingStarSerializer(serializers.ModelSerializer):
     class Meta:
         model = RatingStart
@@ -70,13 +66,6 @@ class RatingListSerializer(serializers.ModelSerializer):
         model = Rating
         fields = ('id', 'user', 'consultant', 'star',)
         read_only_fields = ('id', 'user',)
-
-
-class CategoryConsultantListSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CategoryConsultant
-        fields = ('id', 'consultant', 'category',)
-        read_only_fields = ('consultant',)
 
 
 class ImageConsultantListSerializer(serializers.ModelSerializer):
@@ -130,12 +119,6 @@ class ReviewsDetailSerializer(serializers.ModelSerializer):
         fields = ("id", 'consultant', "name", 'email', "text")
 
 
-class CategoryConsultantDetailSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = CategoryConsultant
-        fields = ('id', 'consultant', 'category',)
-
-
 class ConsultantDetailSerializer(serializers.ModelSerializer):
     user = UsersListSerializer(many=False)
     specialty = CategoryConsultantListSerializer(many=True, read_only=True)
@@ -145,6 +128,12 @@ class ConsultantDetailSerializer(serializers.ModelSerializer):
     class Meta:
         model = Consultant
         fields = ('id', 'user', 'specialty', 'title', 'description', 'reviews', 'ratings')
+
+
+class ConsultantSearchListSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Consultant
+        fields = ('id', 'user', 'title', 'description')
 
 
 class RegistrationClientSerializer(serializers.ModelSerializer):

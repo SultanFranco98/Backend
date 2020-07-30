@@ -10,7 +10,8 @@ from django.utils.translation import ugettext_lazy as _
 class CustomUserManager(BaseUserManager):
     use_in_migrations = True
 
-    def _create_user(self, email, password, is_client, is_consultant, is_staff, is_active, is_superuser, **extra_fields):
+    def _create_user(self, email, password, is_client, is_consultant, is_staff, is_active, is_superuser,
+                     **extra_fields):
         if email:
             email = self.normalize_email(email)
         now = timezone.now()
@@ -86,17 +87,6 @@ class Consultant(models.Model):
     short_description.short_description = 'О себе'
 
 
-class Specialty(models.Model):
-    title = models.CharField(max_length=100, blank=False, null=False, verbose_name=_('Специальность'))
-
-    class Meta:
-        verbose_name = _('Специальность')
-        verbose_name_plural = _('Специальности')
-
-    def __str__(self):
-        return self.title
-
-
 class ImageConsultant(models.Model):
     consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, blank=False, null=False,
                                    related_name='certificates',
@@ -118,20 +108,6 @@ class ImageConsultant(models.Model):
         return mark_safe('<img src="%s" width="300" height="450"/>' % self.get_certificate())
 
     certificate_tag.short_description = 'Сертификаты'
-
-
-class CategoryConsultant(models.Model):
-    consultant = models.ForeignKey(Consultant, on_delete=models.CASCADE, blank=False, null=False,
-                                   related_name='specialty', verbose_name=_('Консультант'))
-    category = models.ForeignKey(Specialty, on_delete=models.CASCADE, blank=False, null=False,
-                                 verbose_name=_('Специальность'))
-
-    class Meta:
-        verbose_name = _('Специальность')
-        verbose_name_plural = _('Специальности')
-
-    def __str__(self):
-        return '{}'.format(self.consultant)
 
 
 class RatingStart(models.Model):

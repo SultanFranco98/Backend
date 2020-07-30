@@ -69,12 +69,7 @@ class ConsultantViewSet(ReadOnlyModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
-class SpecialtyViewSet(ModelViewSet):
-    # permission_classes = [IsAdminUser]
-    permission_classes = [AllowAny]
-    queryset = Specialty.objects.all()
-    serializer_class = SpecialtySerializer
-    pagination_class = CustomResultsSetPagination
+
 
 
 class ReviewsViewSet(ModelViewSet):

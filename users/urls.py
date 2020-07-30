@@ -17,9 +17,6 @@ urlpatterns = [
     path('consultants/<int:pk>/', ConsultantViewSet.as_view({'get': 'retrieve'})),
     path('specialty/<int:pk>/consultants/', ConsultantViewSet.as_view({'get': 'list'})),
 
-    path('specialty/', SpecialtyViewSet.as_view({'get': 'list'})),
-    path('specialty/create', SpecialtyViewSet.as_view({'post': 'create'})),
-
 
     path('ratings/', RatingViewSet.as_view({'get': 'list'})),
     path('ratings/<int:pk>/', RatingViewSet.as_view({'get': 'retrieve'})),

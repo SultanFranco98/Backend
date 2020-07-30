@@ -28,6 +28,8 @@ INSTALLED_APPS = [
     'forums.apps.ForumsConfig',
     'article.apps.ArticleConfig',
     'informations.apps.InformationsConfig',
+    'categories.apps.CategoriesConfig',
+    'drf_multiple_model',
     'oauth2_provider',
     'social_django',
     'rest_framework_social_oauth2',
