@@ -6,25 +6,25 @@ from users.serializers import UsersListSerializer
 class CategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = Category
-        fields = '__all__'
+        fields = ['id', 'title', 'description', 'image', 'icon_image']
 
 
 class SubCategorySerializer(serializers.ModelSerializer):
     class Meta:
         model = SubCategory
-        fields = '__all__'
+        fields = ['id', 'title', 'category']
 
 
 class TypesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Types
-        fields = '__all__'
+        fields = ['id', 'title', 'subcategory']
 
 
 class SubTypesSerializer(serializers.ModelSerializer):
     class Meta:
         model = SubTypes
-        fields = '__all__'
+        fields = ['id', 'title', 'type']
 
 
 class CommentSerializer(serializers.ModelSerializer):
