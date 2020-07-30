@@ -12,6 +12,14 @@ class VoteSerializer(serializers.ModelSerializer):
         fields = ['id', 'user', 'vote', 'article', 'pub_date']
         read_only_fields = ['user', 'pub_date']
 
+    def create(self, validated_data):
+        vote, _ = Vote.objects.update_or_create(
+            user=validated_data.get('user', None),
+            article=validated_data.get('article', None),
+            defaults={'vote': validated_data.get('vote')}
+        )
+        return vote
+
 
 class ArticleAdditionSerializer(serializers.ModelSerializer):
     class Meta:
