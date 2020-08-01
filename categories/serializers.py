@@ -29,7 +29,7 @@ class SubTypesSerializer(serializers.ModelSerializer):
 class SpecialtySerializer(serializers.ModelSerializer):
     class Meta:
         model = Specialty
-        fields = ['title', 'description', 'image', 'icon_image']
+        fields = ['id', 'title', 'description', 'image', 'icon_image']
 
 
 class CategoryConsultantListSerializer(serializers.ModelSerializer):
