@@ -69,8 +69,16 @@ class ConsultantViewSet(ReadOnlyModelViewSet):
         return Response(serializer.data, status=status.HTTP_200_OK)
 
 
+class ConsultantListViewSet(ReadOnlyModelViewSet):
+    permission_classes = [AllowAny]
+    serializer_class = ConsultantListSerializer
+    pagination_class = CustomResultsSetPagination
 
-
+    def get_queryset(self):
+        return Consultant.objects.filter(user__is_active=True).annotate(
+            middle_star=models.Sum(models.F('ratings__star__value')) / models.Count(
+                models.F('ratings')),
+        )
 
 class ReviewsViewSet(ModelViewSet):
     # permission_classes = [IsClient | IsAdminUser]
