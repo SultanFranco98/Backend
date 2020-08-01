@@ -18,7 +18,7 @@ class AdditionInline(admin.TabularInline):
 
 
 class ArticleAdmin(admin.ModelAdmin):
-    fields = ['category', 'subcategory', 'types', 'subtypes', 'title_ru', 'title_kg', 'text_ru', 'text_kg', 'status', 'votes', 'pub_date']
+    fields = ['user', 'category', 'subcategory', 'types', 'subtypes', 'title_ru', 'title_kg', 'text_ru', 'text_kg', 'status', 'votes', 'pub_date']
     list_display = ['title', 'status', 'category', 'user', 'votes']
     list_filter = ['user__email', 'user__first_name', 'user__last_name', 'status', 'category', 'subcategory', 'types',
                    'subtypes', 'votes']
